@@ -94,8 +94,11 @@ def signup_action(request):
                     last_name_en=request.POST['last_name_en'],
                     is_active=False
                     )
+                res_data ={}
                 send_validation_mail(request, user, request.POST['user_email'])
-                return redirect('home')
+                res_data['email_sent']=request.POST['user_email']+" 로 가입확인 이메일이 전송되었습니다."
+                return render(request, 'UserAccount/login.html',res_data)
+                # return redirect('home')
             else:
                 request.session['err_message'] = "이미 가입된 이메일 주소입니다"
                 request.session['err_appear'] = False
