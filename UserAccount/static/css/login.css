@@ -1,0 +1,93 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif+KR&display=swap");
+
+body {
+  background-color: rgb(255, 247, 241);
+  height: 100%;
+}
+header {
+  text-align: center;
+  padding: 60px;
+  color: black;
+  font-family: cursive;
+  /* font-size: 3em; */
+  font-size: 6vw;
+}
+
+.login {
+  /* text-align: center;
+    font-size: 3vw; */
+  max-width: 50%;
+  /* max-height: 50%; */
+  /* border-style: dotted; */
+  box-sizing: border-box;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+  padding: 5px;
+  /* padding: 10% 10% 10% 10%; */
+  margin: 2px auto;
+  box-shadow: 5px 2px 10px #aaa;
+  font-family: "Noto Serif KR", serif;
+  text-align: center;
+}
+.pageName {
+  /* text-align: center; */
+  font-size: 2.2vw;
+  padding: 30px;
+  font-weight: bold;
+}
+
+.pageDes {
+  font-size: 1.6vw;
+  /* padding: 30px; */
+  /* font-weight: bold; */
+}
+
+.loginField {
+  /* padding: 5px; */
+  padding-left: 30px;
+  /* text-align: center; */
+}
+
+input[type="email"],
+input[type="password"] {
+  /* width: 100%; */
+  padding: 5px;
+  border: 1px solid rgb(63, 42, 3);
+  border-radius: 4px;
+  resize: vertical;
+  background-color: rgb(243, 236, 231);
+  font-family: "Noto Serif KR", serif;
+  font-size: 1.3vw;
+  width: 40%;
+}
+
+input[type="submit"] {
+  background-color: #69665e;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  float: center;
+  margin: auto;
+  font-size: 1.5vw;
+  font-family: "Noto Serif KR", serif;
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}
+
+:-moz-placeholder {
+  /* Firefox 18- */
+  text-align: center;
+}
+
+::-moz-placeholder {
+  /* Firefox 19+ */
+  text-align: center;
+}
+
+:-ms-input-placeholder {
+  text-align: center;
+}

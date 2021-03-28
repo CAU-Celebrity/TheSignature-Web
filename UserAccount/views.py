@@ -83,6 +83,7 @@ def logout_action(request):
 def signup_action(request):
     if request.method == "POST":
         if request.POST["user_passwd"] == request.POST["user_passwd_check"]: # Password check는 Front에서 Ajax 사용
+
             if email_existence(request.POST['user_email']) == False:
                 user = UserInfo.objects.create(
                     user_email=request.POST['user_email'], 
