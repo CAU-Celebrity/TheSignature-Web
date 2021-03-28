@@ -49,3 +49,9 @@ function judgeJoin(){
     });
     }
 
+//function (){
+//    console.log("hi ",{{ request.session.email_sent }});
+//    if({{ request.session.email_sent }}){
+//    alert({{ request.session.email_sent }});
+//    }
+//}
