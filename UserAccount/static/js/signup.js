@@ -119,6 +119,11 @@ function activeJoin(){
         });
 }
 
+function emailWrite(){
+    inactiveJoin();
+}
+
+
 //function (){
 //    console.log("hi ",{{ request.session.email_sent }});
 //    if({{ request.session.email_sent }}){
