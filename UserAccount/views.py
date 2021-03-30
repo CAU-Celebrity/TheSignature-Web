@@ -1,4 +1,5 @@
-from django.http.response import JsonResponse
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse, JsonResponse
 from rest_framework import viewsets
 from django.shortcuts import redirect, render
 from .models import UserInfo
@@ -63,6 +64,10 @@ def page_login(request):
     else:
         return render(request, "UserAccount/login.html")
 
+def logout_action(request):
+    expire_session(request)
+    return redirect('login')
+
 def sign_up(request):
     if 'err_appear' in request.session:
         if request.session['err_appear'] == False: # First reload, express the reason why the login has failed
@@ -76,14 +81,16 @@ def sign_up(request):
     else:
         return render(request, "UserAccount/sign_up.html")
 
-def logout_action(request):
-    expire_session(request)
-    return redirect('login')
+def email_check(request):
+    request_email = request.GET['request_email']
+    if email_existence(request_email):
+        return HttpResponse('Exist')
+    else:
+        return HttpResponse('NotExist')
 
 def signup_action(request):
     if request.method == "POST":
         if request.POST["user_passwd"] == request.POST["user_passwd_check"]: # Password check는 Front에서 Ajax 사용
-
             if email_existence(request.POST['user_email']) == False:
                 user = UserInfo.objects.create(
                     user_email=request.POST['user_email'], 
@@ -100,12 +107,8 @@ def signup_action(request):
                 return render(request, 'UserAccount/login.html',res_data)
                 # return redirect('home')
             else:
-                request.session['err_message'] = "이미 가입된 이메일 주소입니다"
-                request.session['err_appear'] = False
                 return redirect('sign_up')
         else:
-            request.session['err_message'] = "비밀번호가 일치하지 않습니다"
-            request.session['err_appear'] = False
             return redirect('sign_up')
 
     return render(request, 'signature/sign_up.html')
