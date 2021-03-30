@@ -57,7 +57,8 @@ header {
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+#emailCheck {
   /* width: 100%; */
   padding: 5px;
   border: 1px solid rgb(63, 42, 3);
@@ -70,7 +71,23 @@ input[type="password"] {
 }
 
 input[type="email"]{
-  width: 80%;
+  width: 64%;
+  display: inline-block;
+  margin-right: 8px;
+}
+
+#emailSet {
+  display: flex;
+}
+
+#emailCheck {
+  display: inline-block;
+  width: 14%;
+  text-align: center;
+}
+
+#emailCheck:hover {
+  cursor: pointer;
 }
 
 input[type="password"] {
