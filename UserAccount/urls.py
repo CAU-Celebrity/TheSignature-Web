@@ -5,6 +5,7 @@ from .views import Activate
 
 
 urlpatterns = [
+    path('',views.intro,name="intro"),
     path('admin/', admin.site.urls),
     path('login/', views.page_login, name="login"),
     path('home/', views.index, name="home"),

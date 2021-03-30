@@ -45,6 +45,9 @@ def get_secret(key, secrets=secrets):
         error_msg = "Set the {} environment variable".format(key)
         raise ImproperlyConfigured(error_msg)
 
+def intro(request):
+    return render(request,"UserAccount/intro.html")
+
 def index(request):
     if session_existence(request) == False:
         return redirect('login')
