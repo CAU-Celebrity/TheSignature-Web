@@ -48,12 +48,6 @@ def get_secret(key, secrets=secrets):
 def intro(request):
     return render(request,"UserAccount/intro.html")
 
-def index(request):
-    if session_existence(request) == False:
-        return redirect('login')
-    else:
-        return render(request, "UserAccount/index.html")
-
 def page_login(request):
     if 'err_appear' in request.session:
         if request.session['err_appear'] == False: # First reload, express the reason why the login has failed
@@ -83,6 +77,9 @@ def sign_up(request):
         return redirect('home')
     else:
         return render(request, "UserAccount/sign_up.html")
+
+def modify_data(request):
+    return render(request, "UserAccount/editInfo.html")
 
 def email_check(request):
     request_email = request.GET['request_email']
