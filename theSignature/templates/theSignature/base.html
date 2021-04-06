@@ -37,7 +37,7 @@
         <div class="customer-btn">
             {% csrf_token %}
             <div class="customer-compo welcome">
-                Welcome {% request.session.first_name_kr %} 님
+                Welcome {{ request.session.user_name }} 님
             </div>
             <div id="btns" class="btns" style="display: none;">
                 <a class="customer-compo btn" id="edit-info" href="">내 정보 수정하기</a><br/><br/><br/>

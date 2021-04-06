@@ -57,7 +57,7 @@ def page_login(request):
             del request.session['err_message']
 
     if session_existence(request):
-        return redirect('home')
+        return redirect('intro')
     else:
         return render(request, "UserAccount/login.html")
 
@@ -74,7 +74,7 @@ def sign_up(request):
             del request.session['err_message']
 
     if session_existence(request):
-        return redirect('home')
+        return redirect('intro')
     else:
         return render(request, "UserAccount/sign_up.html")
 
@@ -157,6 +157,12 @@ def email_existence(user_email):
 def save_session(request, user_email):
     if email_existence(user_email):
         request.session['user_email'] = user_email
+        cursor = get_db_cursor()
+        sql = "SELECT last_name_kr FROM UserAccount_userinfo WHERE user_email = '" + user_email + "'"
+        cursor.execute(sql)
+        row = cursor.fetchone()
+        request.session['user_name'] = row[0]
+
 
 def expire_session(request):
     del request.session['user_email']

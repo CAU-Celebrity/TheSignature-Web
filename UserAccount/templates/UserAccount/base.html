@@ -15,6 +15,9 @@
     {% if request.session.user_email %}
         <div id="authorized_container">
             <h1>로그인 되었음.</h1>
+            {{ request.session.user_email }}
+            {{ request.session.user_name }}
+
             <button><a href="{% url 'logout_action' %}">Log-out</a></button>
         </div>
     {% endif %}
