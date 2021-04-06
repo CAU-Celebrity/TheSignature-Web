@@ -74,6 +74,19 @@ input[type="submit"] {
   font-family: "Noto Serif KR", serif;
 }
 
+#signup_btn {
+  background-color: #69665e;
+  color: white;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  float: center;
+  margin: auto;
+  font-size: 1.5vw;
+  font-family: "Noto Serif KR", serif;
+}
+
 ::-webkit-input-placeholder {
   text-align: center;
 }
