@@ -81,6 +81,9 @@ def sign_up(request):
 def modify_data(request):
     return render(request, "UserAccount/editInfo.html")
 
+def saved_signs(request):
+    return render(request, "UserAccount/savedSignatures.html")
+
 def email_check(request):
     request_email = request.GET['request_email']
     if email_existence(request_email):
