@@ -23,14 +23,24 @@ function emailCheck() {
 
 function fillEmailCheckResult() {
     let result_holder = document.querySelector('#checkResult');
+    var request_email = document.querySelector("#emailInput").value;
+//    console.log("printing",request_email);
     if(emailCheck() === false) {
         result_holder.innerHTML = '이미 가입된 이메일입니다.';
         result_holder.style.setProperty('color', '#f8756c');
         pwCheck(); // Join Button activation check
     } else {
+        if (request_email){
         result_holder.innerHTML = '사용 가능한 이메일입니다.';
         result_holder.style.setProperty('color', '#6ca4f8');
         pwCheck(); // Join Button activation check
+        }
+        else{
+        result_holder.innerHTML = '이메일을 입력해주세요.';
+        result_holder.style.setProperty('color', '#f8756c');
+        pwCheck(); // Join Button activation check
+        }
+
     }
 }
 
