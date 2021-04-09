@@ -15,5 +15,7 @@ urlpatterns = [
     path('mySigns/', views.saved_signs, name="saved_signs"),
     path('login_action/', views.login_action, name="login_action"),
     path('logout_action/', views.logout_action, name="logout_action"),
-    path('activate/<str:uidb64>/<str:token>', Activate.as_view(), name="activate")
+    path('activate/<str:uidb64>/<str:token>', Activate.as_view(), name="activate"),
+    path('modifyData/pwCheck/', views.password_check, name="password_check"),
+    path('modifyData/apply/', views.modify_action, name="modify_action"),
 ]

@@ -125,21 +125,19 @@ form, #pwChecking {
 
 <script>
 function pwCheckDefine() {
-    console.log("pw Check clicked");
+    var request_email = document.querySelector("#email_address").value;
     var request_pw = document.querySelector("#pwCheck_1").value;
-    console.log("Target value: " + request_pw );
-    // let returnValue = false; //이미 존재하면 false를 리턴.
+    let returnValue = false; //이미 존재하면 false를 리턴.
     $.ajax({
-        url: 'pwcheck/',
+        url: 'pwCheck/',
         type: 'GET',
         async: false,
-        data: {'request_pw': request_pw},
+        data: {'request_email': request_email, 'request_pw': request_pw},
         success: function(data) {
-            //console.log("Already exist: " + data);
-            if(data === 'Exist') {
-                returnValue = false;
-            } else {
+            if(data === 'Correct') {
                 returnValue = true;
+            } else {
+                returnValue = false;
             }
         }
     })
@@ -173,12 +171,8 @@ function pwCheck(){
         document.getElementById('lenCheck').innerHTML='';
         if (document.getElementById('pw2').value!=''){
             if(document.getElementById('pw1').value==document.getElementById('pw2').value) {
-                if (emailCheck()) {
-                    console.log("Active");
-                    activeJoin();
-                } else {
-                    inactiveJoin();
-                }
+                
+                activeJoin();
                 return '비밀번호가 일치합니다.';
             }
             else {
@@ -257,7 +251,7 @@ function activeJoin(){
       </div><br/><br/>
         <div class="userEmail editField">
           <label for="user_email">email</label>
-          <input name="user_email" type="email"  value="sign@gmail.com" disabled="disabled">
+          <input name="user_email" type="email" id="email_address" value="{{ request.session.user_email }}" disabled="disabled">
         </div><br/>
         <div id="pwChecking">
         <div class="pw editField">
@@ -266,15 +260,13 @@ function activeJoin(){
       &nbsp;&nbsp;<br><span id="user_pw" class="decription"></span>
       </div>
       <div class="btn" style = "background-color: #a39a86; color: rgb(243, 236, 231);" onclick="UserpwCheck()">
-<!--          id="pwCheck"-->
           정보 변경하기
       </div>
       <br/>
         </div>
-      <form id ="showEditField">
+      <form id ="showEditField" method="POST" action="apply/" style="display: none;">
+        {% csrf_token %}
         <div class="changeInfo editField">
-          <!-- style="display: none;" -->
-
       <div class="split" id='line'><hr></div>
       <br/>
           <div class="korName nameDiv editField">

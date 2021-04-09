@@ -1,5 +1,5 @@
 from django.http.request import HttpRequest
-from django.http.response import HttpResponse, JsonResponse
+from django.http.response import HttpResponse, JsonResponse, StreamingHttpResponse
 from rest_framework import viewsets
 from django.shortcuts import redirect, render
 from .models import UserInfo
@@ -166,9 +166,9 @@ def save_session(request, user_email):
         row = cursor.fetchone()
         request.session['user_name'] = row[0]
 
-
 def expire_session(request):
     del request.session['user_email']
+    del request.session['user_name']
 
 def session_existence(request):
     if 'user_email' not in request.session:
@@ -196,7 +196,7 @@ def login_action(request):
             return redirect('login')
         else:
             login_success = password_confirm(request.POST["user_email"], request.POST["user_passwd"])
-            if login_success == False: # 비밀번호 틀림
+            if login_success == False:
                 request.session['err_message'] = "올바르지 않은 비밀번호입니다"
                 request.session['err_appear'] = False
                 return redirect('login')
@@ -212,3 +212,31 @@ def login_action(request):
                     return redirect('login')
 
     return render(request, 'UserAccount/login.html', context={'err_message': "Wrong Access"})
+
+
+def password_check(request): # Works for AJax request and response
+    cursor = get_db_cursor()
+    sql = "SELECT user_password FROM UserAccount_userinfo WHERE user_email='" + request.GET['request_email'] + "'"
+    cursor.execute(sql)
+    row = cursor.fetchone()
+    if password_hash(request.GET['request_pw']) == row[0]:
+        return HttpResponse('Correct')
+    else:
+        return HttpResponse('NotCorrect')
+
+
+def modify_action(request):
+    new_firstname_kr = request.POST['first_name_kr']
+    new_lastname_kr = request.POST['last_name_kr']
+    new_firstname_en = request.POST['first_name_en']
+    new_lastname_en = request.POST['last_name_en']
+    new_password = request.POST['user_passwd']
+    obj = UserInfo.objects.get(user_email=request.session['user_email'])
+    obj.first_name_kr = new_firstname_kr
+    obj.last_name_kr = new_lastname_kr
+    obj.first_name_en = new_firstname_en
+    obj.last_name_en = new_lastname_en
+    obj.user_password = password_hash(new_password)
+    obj.save()
+    logout_action(request)
+    return redirect('login')
