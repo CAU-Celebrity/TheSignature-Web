@@ -15,9 +15,6 @@
     <div class="container">
         <header>
             <div class="logo">The Signature</div>
-
-
-
         </header>
     </div>
     <div class="navbar">
@@ -28,7 +25,7 @@
             <a class="nav-link" href="{% url 'watermark' %}">워터마크 적용하기</a>
         </nav>
     </div>
-    <div class="customer" >
+<div class="customer" >
         <div class="cross" onclick="showBtns()">
             <i></i>
         </div>
@@ -43,8 +40,6 @@
                 <a class="customer-compo btn" id="logout" href="{% url 'logout_action' %}">로그아웃</a>
             </div>
         </div>
-
-
     </div>
     <div class="toTop" onclick="goTop()">
         <a class="arrow" href="">
@@ -53,7 +48,9 @@
     </div>
 <div>
 {% block content %}
+
 {% endblock %}
+
 </div>
 </body>
 </html>

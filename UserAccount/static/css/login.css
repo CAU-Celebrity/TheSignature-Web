@@ -10,7 +10,7 @@ header {
   color: black;
   font-family: cursive;
   /*font-size: 8vw;*/
-  font-size: 80px;
+  font-size: 70px;
 }
 
 .login {
@@ -32,13 +32,13 @@ header {
 .pageName {
   /* text-align: center; */
   /*font-size: 2.2vw;*/
-  font-size: 30px;
+  font-size: 20px;
   padding: 30px;
   font-weight: bold;
 }
 
 .pageDes {
-  font-size: 25px;
+  font-size: 15px;
 
   /*font-size: 1.6vw;*/
   /* padding: 30px; */
@@ -52,7 +52,7 @@ header {
 }
 
 label {
-  font-size: 22px;
+  font-size: 12px;
 }
 
 input[type="email"],
@@ -65,7 +65,7 @@ input[type="password"] {
   background-color: rgb(243, 236, 231);
   font-family: "Noto Serif KR", serif;
   /*font-size: 1.3vw;*/
-  font-size: 20px;
+  font-size: 10px;
   width: 40%;
 }
 
@@ -79,7 +79,7 @@ input[type="submit"] {
   float: center;
   margin: 25px auto;
   /*font-size: 1.5vw;*/
-  font-size: 17px;
+  font-size: 7px;
   font-family: "Noto Serif KR", serif;
 }
 
@@ -93,7 +93,7 @@ input[type="submit"] {
   float: center;
   margin: 25px auto;
   /*font-size: 1.5vw;*/
-    font-size: 17px;
+    font-size: 7px;
   font-family: "Noto Serif KR", serif;
 }
 
@@ -118,77 +118,61 @@ input[type="submit"] {
 
 @media (max-width: 1280px) {
   .logo {
-    font-size: 80px;
+    font-size: 70px;
   }
   .pageName {
-    font-size: 30px;
+    font-size: 20px;
   }
   .pageDes {
-    font-size: 25px;
+    font-size: 15px;
   }
   label {
-    font-size: 22px;
+    font-size: 12px;
   }
   input[type="email"],
 input[type="password"] {
-    font-size: 20px;
+    font-size: 10px;
     }
    input[type="submit"],#signup_btn {
-       font-size: 20px;
+       font-size: 10px;
    }
 }
 @media (max-width: 1000px) {
   .logo {
-    font-size: 75px;
+    font-size: 65px;
   }
+  .login {
+    max-width: 70%;
+    }
   .pageName {
-    font-size: 25px;
+    font-size: 18px;
   }
   .pageDes {
-    font-size: 20px;
+    font-size: 13px;
   }
   label {
-    font-size: 19px;
+    font-size: 9px;
   }
   input[type="email"],
 input[type="password"] {
-    font-size: 17px;
+    font-size: 7px;
     }
    input[type="submit"],#signup_btn {
-       font-size: 17px;
+       font-size: 7px;
    }
 }
 @media (max-width: 767px) {
   .logo {
-    font-size: 70px;
-  }
-  .pageName {
-    font-size: 24px;
-  }
-  .pageDes {
-    font-size: 15px;
-  }
-  label {
-    font-size: 14px;
-  }
-  input[type="email"],
-input[type="password"] {
-    font-size: 12px;
-    }
-   input[type="submit"],#signup_btn {
-       font-size: 13px;
-   }
-}
-
-@media (max-width: 639px) {
-  .logo {
     font-size: 60px;
   }
+  .login {
+    max-width: 80%;
+    }
   .pageName {
-    font-size: 23px;
+    font-size: 15px;
   }
   .pageDes {
-    font-size: 15px;
+    font-size: 11px;
   }
   label {
     font-size: 13px;
@@ -201,3 +185,25 @@ input[type="password"] {
        font-size: 12px;
    }
 }
+
+/*@media (max-width: 639px) {
+  .logo {
+    font-size: 50px;
+  }
+  .pageName {
+    font-size: 8px;
+  }
+  .pageDes {
+    font-size: 6px;
+  }
+  label {
+    font-size: 13px;
+  }
+  input[type="email"],
+input[type="password"] {
+    font-size: 11px;
+    }
+   input[type="submit"],#signup_btn {
+       font-size: 12px;
+   }
+}*/
