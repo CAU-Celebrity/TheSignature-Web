@@ -217,28 +217,28 @@ function fillPwCheckResult() {
 
 
 function inactiveJoin(){
-    $(".editBtn").prop("disabled", true);
-    $(".editBtn").css("background-color", "#c7c7c2");
-    $(".editBtn").css("color", "white");
+    $("#editBtn").prop("disabled", true);
+    $("#editBtn").css("background-color", "#c7c7c2");
+    $("#editBtn").css("color", "white");
 }
 
 function activeJoin(){
-    $(".editBtn").prop("disabled", false);
-    $(".editBtn").css("background-color", "#6b6351");
+    $("#editBtn").prop("disabled", false);
+    $("#editBtn").css("background-color", "#6b6351");
 
 
-    const element = document.querySelector("#joinBtn");
+    const element = document.querySelector("#editBtn");
     element.addEventListener("mouseover", event => {
         // console.log("Mouse in");
-        $(".editBtn").css("background-color", "#a39a86");
-        $(".editBtn").css("color", "white");
+        $("#editBtn").css("background-color", "#a39a86");
+        $("#editBtn").css("color", "white");
 
         });
 
         element.addEventListener("mouseout", event => {
         // console.log("Mouse out");
-        $(".editBtn").css("background-color", "#6b6351");
-        $(".editBtn").css("color", "black");
+        $("#editBtn").css("background-color", "#6b6351");
+        $("#editBtn").css("color", "black");
 
         });
 }
@@ -262,7 +262,7 @@ function activeJoin(){
         <div id="pwChecking">
         <div class="pw editField">
           <label for="password ">비밀번호</label>
-      <input name="user_password" type="password" id="pwCheck" onclick="UserpwCheck()" placeholder="비밀번호 입력" required>
+      <input name="user_password" type="password" id="pwCheck" placeholder="비밀번호 입력" required>
       &nbsp;&nbsp;<br><span id="user_pw" class="decription"></span>
       </div>
       <div class="btn" id="pwCheck" style = "background-color: #a39a86; color: rgb(243, 236, 231);" onclick="pwCheck()">
