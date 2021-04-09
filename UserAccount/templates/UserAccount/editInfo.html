@@ -126,7 +126,7 @@ form, #pwChecking {
 <script>
 function pwCheckDefine() {
     console.log("pw Check clicked");
-    var request_pw = document.querySelector("#pwCheck").value;
+    var request_pw = document.querySelector("#pwCheck_1").value;
     console.log("Target value: " + request_pw );
     // let returnValue = false; //이미 존재하면 false를 리턴.
     $.ajax({
@@ -147,15 +147,15 @@ function pwCheckDefine() {
 }
 
 function UserpwCheck() {
-    let result_holder = document.querySelector('#checkResult');
+    let result_holder = document.querySelector('#user_pw');
 
     if(pwCheckDefine() === true) {
-        $(".pwChecking").css("display", "none");
-        $(".showEditField").css("display", "inline");
+        $("#pwChecking").css("display", "none");
+        $("#showEditField").css("display", "inline");
         document.getElementById('user_pw').innerHTML='';
     } else {
         document.getElementById('user_pw').innerHTML='비밀번호를 올바르게 입력해주세요.';
-        document.getElementById('pwCheck').innerHTML='';
+        document.getElementById('pwCheck_1').innerHTML='';
         document.getElementById('user_pw').style.color='#f8756c';
     }
 }
@@ -262,10 +262,11 @@ function activeJoin(){
         <div id="pwChecking">
         <div class="pw editField">
           <label for="password ">비밀번호</label>
-      <input name="user_password" type="password" id="pwCheck" placeholder="비밀번호 입력" required>
+      <input name="user_password" type="password" id="pwCheck_1" placeholder="비밀번호 입력" required>
       &nbsp;&nbsp;<br><span id="user_pw" class="decription"></span>
       </div>
-      <div class="btn" id="pwCheck" style = "background-color: #a39a86; color: rgb(243, 236, 231);" onclick="pwCheck()">
+      <div class="btn" style = "background-color: #a39a86; color: rgb(243, 236, 231);" onclick="UserpwCheck()">
+<!--          id="pwCheck"-->
           정보 변경하기
       </div>
       <br/>
@@ -286,7 +287,7 @@ function activeJoin(){
         <div class="engName nameDiv editField">
             <label for="first_name_en">성명 (영문)</label> <br>
             <input name="first_name_en" type="text" value="Hong" required>
-            <input name="first_name_en" type="text" value="Gildong" required>
+            <input name="last_name_en" type="text" value="Gildong" required>
 
         </div><br>
 
