@@ -27,3 +27,6 @@ DATABASES = {
 }
 
 SECRET_KEY = get_secret("SECRET_KEY")
+
+#Handle session is not Json Serializable
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'

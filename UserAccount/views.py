@@ -79,9 +79,13 @@ def sign_up(request):
         return render(request, "UserAccount/sign_up.html")
 
 def modify_data(request):
+    if session_existence(request) == False:
+        return redirect("login")
     return render(request, "UserAccount/editInfo.html")
 
 def saved_signs(request):
+    if session_existence(request) == False:
+        return redirect("login")
     return render(request, "UserAccount/savedSignatures.html")
 
 def email_check(request):
@@ -238,6 +242,7 @@ def modify_action(request):
     obj.last_name_en = new_lastname_en
     obj.user_password = password_hash(new_password)
     obj.save()
+    save_session(request, request.session['user_email'])
     return redirect('modify_data')
 
 def get_firstname_kr(request):
