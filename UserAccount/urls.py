@@ -18,4 +18,8 @@ urlpatterns = [
     path('activate/<str:uidb64>/<str:token>', Activate.as_view(), name="activate"),
     path('modifyData/pwCheck/', views.password_check, name="password_check"),
     path('modifyData/apply/', views.modify_action, name="modify_action"),
+    path('modifyData/getFirstnameKr/', views.get_firstname_kr, name="get_firstname_kr"),
+    path('modifyData/getLastnameKr/', views.get_lastname_kr, name="get_lastname_kr"),
+    path('modifyData/getFirstnameEn/', views.get_firstname_en, name="get_firstname_en"),
+    path('modifyData/getLastnameEn/', views.get_lastname_en, name="get_lastname_en"),
 ]

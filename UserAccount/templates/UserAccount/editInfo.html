@@ -124,6 +124,74 @@ form, #pwChecking, .decription {
 </style>
 
 <script>
+
+function get_firstname_kr() {
+  var result = false;
+  $.ajax({
+      url: 'getFirstnameKr/',
+      type: 'GET',
+      async: false,
+      data: {},
+      success: function(data) {
+        result = data
+      }
+  })
+  return result;
+}
+
+function get_lastname_kr() {
+  var result = false;
+  $.ajax({
+      url: 'getLastnameKr/',
+      type: 'GET',
+      async: false,
+      data: {},
+      success: function(data) {
+        result = data;
+      }
+  })
+  return result;
+}
+
+function get_firstname_en() {
+  var result = false;
+  $.ajax({
+      url: 'getFirstnameEn/',
+      type: 'GET',
+      async: false,
+      data: {},
+      success: function(data) {
+        result = data;
+      }
+  })
+  return result;
+}
+
+function get_lastname_en() {
+  var result = false;
+  $.ajax({
+      url: 'getLastnameEn/',
+      type: 'GET',
+      async: false,
+      data: {},
+      success: function(data) {
+        result = data;
+      }
+  })
+  return result;
+}
+
+function fillNameBlank() {
+  var firstname_kr = get_firstname_kr();
+  var lastname_kr = get_lastname_kr();
+  var firstname_en = get_firstname_en();
+  var lastname_en = get_lastname_en();
+  document.querySelector('#firstname_kr').value = firstname_kr;
+  document.querySelector('#lastname_kr').value = lastname_kr;
+  document.querySelector('#firstname_en').value = firstname_en;
+  document.querySelector('#lastname_en').value = lastname_en;
+}
+
 function pwCheckDefine() {
     var request_email = document.querySelector("#email_address").value;
     var request_pw = document.querySelector("#pwCheck_1").value;
@@ -148,6 +216,7 @@ function UserpwCheck() {
     let result_holder = document.querySelector('#user_pw');
 
     if(pwCheckDefine() === true) {
+        fillNameBlank();
         $("#pwChecking").css("display", "none");
         $("#showEditField").css("display", "inline");
         document.getElementById('user_pw').innerHTML='';
@@ -208,7 +277,6 @@ function fillPwCheckResult() {
         }
     }
 }
-
 
 function inactiveJoin(){
     $("#editBtn").prop("disabled", true);
@@ -271,15 +339,15 @@ function activeJoin(){
       <br/>
           <div class="korName nameDiv editField">
             <label for="first_name_kr">성명 (한글)</label><br>
-            <input name="first_name_kr" type="text" value="홍" required>
-            <input name="last_name_kr" type="text" value="길동" required>
+            <input id="firstname_kr" name="first_name_kr" type="text" value="홍" required>
+            <input id="lastname_kr" name="last_name_kr" type="text" value="길동" required>
 
         </div><br>
 
         <div class="engName nameDiv editField">
             <label for="first_name_en">성명 (영문)</label> <br>
-            <input name="first_name_en" type="text" value="Hong" required>
-            <input name="last_name_en" type="text" value="Gildong" required>
+            <input id="firstname_en" name="first_name_en" type="text" value="Hong" required>
+            <input id="lastname_en" name="last_name_en" type="text" value="Gildong" required>
 
         </div><br>
 

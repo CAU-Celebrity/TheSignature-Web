@@ -238,5 +238,20 @@ def modify_action(request):
     obj.last_name_en = new_lastname_en
     obj.user_password = password_hash(new_password)
     obj.save()
-    logout_action(request)
-    return redirect('login')
+    return redirect('modify_data')
+
+def get_firstname_kr(request):
+    obj = UserInfo.objects.get(user_email=request.session['user_email'])
+    return HttpResponse(obj.first_name_kr)
+
+def get_lastname_kr(request):
+    obj = UserInfo.objects.get(user_email=request.session['user_email'])
+    return HttpResponse(obj.last_name_kr)
+
+def get_firstname_en(request):
+    obj = UserInfo.objects.get(user_email=request.session['user_email'])
+    return HttpResponse(obj.first_name_en)
+
+def get_lastname_en(request):
+    obj = UserInfo.objects.get(user_email=request.session['user_email'])
+    return HttpResponse(obj.last_name_en)
