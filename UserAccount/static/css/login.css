@@ -37,12 +37,17 @@ header {
   font-weight: bold;
 }
 
-.pageDes {
+.pageDes,{
   font-size: 15px;
 
   /*font-size: 1.6vw;*/
   /* padding: 30px; */
   /* font-weight: bold; */
+}
+
+.description {
+ font-size: 15px;
+ color:#f8756c;
 }
 
 .loginField {
@@ -123,7 +128,7 @@ input[type="submit"] {
   .pageName {
     font-size: 20px;
   }
-  .pageDes {
+  .pageDes,.description {
     font-size: 15px;
   }
   label {
@@ -147,7 +152,7 @@ input[type="password"] {
   .pageName {
     font-size: 18px;
   }
-  .pageDes {
+  .pageDes,.description {
     font-size: 13px;
   }
   label {
@@ -171,7 +176,7 @@ input[type="password"] {
   .pageName {
     font-size: 15px;
   }
-  .pageDes {
+  .pageDes,.description {
     font-size: 11px;
   }
   label {
