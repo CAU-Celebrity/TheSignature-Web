@@ -1,6 +1,5 @@
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse, StreamingHttpResponse
-from rest_framework import viewsets
 from django.shortcuts import redirect, render
 from .models import UserInfo
 import pymysql
