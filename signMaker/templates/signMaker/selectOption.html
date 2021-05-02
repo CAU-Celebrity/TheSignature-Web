@@ -1,0 +1,204 @@
+{% extends 'theSignature/base.html' %}
+{% block title%} :: 나만의 서명 제작하기 :: {% endblock %}
+{% block content %}
+
+{% endblock %}
+<style>
+</style>
+.makeSign {
+    text-align: center;
+    align-items: center;
+    box-sizing: border-box;
+    border-radius: 20px;
+    background-color: #f1efef;
+    max-width: 60vw;
+    margin-left: 120px;
+    margin-bottom: 60px;
+    box-shadow: 5px 2px 10px rgb(216, 216, 216);
+    padding: 70px 70px 50px 70px;
+    font-size: 16px;
+    left: 50%;
+}
+
+.board {
+    font-size: 20px;
+    background-color: #f1efef;
+    font-weight: bold;
+}
+
+.makeSignField,
+.desc,
+#styleSelect,
+#showLetter {
+    background-color: #f1efef;
+}
+<script>
+function nameCheck() {
+
+    var name = document.getElementById('name-input').value;
+    var nameLength = 0;
+    var nameArr = [];
+
+    for (i = 0; i < name.length; i++) {
+        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)) {
+            nameArr[nameLength] = name[i];
+            nameLength++;
+        }
+    }
+
+    if (nameLength == 0) {
+        alert('유효한 이름을 입력해주세요.');
+    } else {
+        var stylefield = document.getElementById('styleSelect');
+        var letterfield = document.getElementById('letterSelect');
+        var line1 = document.getElementById('line1');
+        var line2 = document.getElementById('line2');
+
+        $("#nameinputbtn").attr("disabled", "disabled");
+        $("#nameinputbtn").css("backgroundColor", "#868383");
+        stylefield.style.display = 'inline';
+        letterfield.style.display = 'inline';
+        line1.style.display = 'inline';
+        line2.style.display = 'inline';
+
+        for (i = 0; i < nameLength; i++) {
+            var letter = "<input type=" + "checkbox " + "name=" + "chk-letter " + "value=" + String(i) + "></input> " + nameArr[i] + "</br>"
+            $(letter).appendTo('#showLetter');
+        }
+
+        document.getElementById('makeSignbtn').style.setProperty('display', 'inline');
+
+
+    }
+
+}
+
+
+function delList() {
+    var letterfield = document.getElementById('letterSelect');
+    if (letterfield.style.display == 'inline') {
+        // console.log('already open');
+        $('#showLetter').remove();
+        // var newList = "<div id=" + "showLetter" + "> </div>";
+        $("<div id=" + "showLetter" + "> </div>").appendTo("#letterSelect");
+        $("#nameinputbtn").removeAttr("disabled");
+        $("#nameinputbtn").css("backgroundColor", "#a39a86");
+
+        document.getElementById('styleSelect').style.setProperty('display', 'none');
+        document.getElementById('line1').style.setProperty('display', 'none');
+        document.getElementById('line2').style.setProperty('display', 'none');
+
+        document.getElementById('letterSelect').style.setProperty('display', 'none');
+        document.getElementById('makeSignbtn').style.setProperty('display', 'none');
+
+        if ($('input[name="chk-style"]').is(":checked")) {
+            $('input[name="chk-style"]').attr('checked', false);
+        }
+
+
+    }
+
+
+}
+
+function makeSign() {
+
+    const style = 'input[name="chk-style"]:checked';
+    const selectedStyle = document.querySelectorAll(style);
+
+    let styles = [];
+    var i = 0;
+    selectedStyle.forEach((el) => {
+        styles[i] = el.value;
+        i++;
+    });
+
+
+    const letter = 'input[name="chk-letter"]:checked';
+    const selectedLetter = document.querySelectorAll(letter);
+
+    let letters = [];
+    var j = 0;
+    selectedLetter.forEach((el) => {
+        letters[j] = el.value;
+        j++;
+    });
+
+
+    var nameArr = getName();
+    console.log(nameArr);
+    console.log(styles);
+    console.log(letters);
+}
+
+function getName() {
+    var name = document.getElementById('name-input').value;
+    var nameLength = 0;
+    var nameArr = [];
+
+    for (i = 0; i < name.length; i++) {
+        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)) {
+            nameArr[nameLength] = name[i];
+            nameLength++;
+        }
+    }
+
+    return nameArr;
+}
+</script>
+
+
+<div class="pageName">
+            서명 만들기 >>
+        </div><br/><br/><br/><br/><br/><br/>
+
+        <div class=" makeSign">
+            <div class="board">
+                조건 선택
+            </div><br/><br/>
+
+            <div class="nameEnter makeSignField">
+                <div class="desc">
+                    서명 제작을 원하는 글자를 입력해주세요.
+                </div><br/>
+                <input type="text" id="name-input" onkeydown="delList()">
+            </div>
+            <br/>
+            <button class="btn" id="nameinputbtn" style="background-color: #a39a86; color: rgb(243, 236, 231);" onclick="nameCheck()">조건 선택하기</button>
+
+            <div class="split" id='line1' style="display: none">
+                <br/><br/><br/>
+                <hr>
+            </div>
+
+            <div id="styleSelect" style="display: none">
+                <br/>
+                <div class="desc">
+                    원하는 스타일을 선택해주세요.
+                </div><br/>
+                <input type="checkbox" name="chk-style" value='round'> 둥글
+                <input type="checkbox" name="chk-style" value='pointy'> 뾰족
+                <br/>
+                <input type="checkbox" name="chk-style" value='long'> 길쭉
+                <input type="checkbox" name="chk-style" value='flat'> 납작
+                <br/>
+                <input type="checkbox" name="chk-style" value='visible'> 뚜렷
+                <input type="checkbox" name="chk-style" value='invisible'> 흐릿
+            </div>
+
+            <div class="split" id='line2' style="display: none">
+                <br/><br/>
+                <hr>
+            </div>
+            <br/>
+            <div id="letterSelect" style="display: none">
+                <div class="desc">
+                    강조를 원하는 글자를 선택해주세요.
+                </div><br/>
+                <div id='showLetter'>
+                </div>
+            </div>
+            <br/>
+            <button class="btn" id="makeSignbtn" style="background-color: #a39a86; color: rgb(243, 236, 231); display: none;" onclick="makeSign()" >서명 만들기</button>
+
+        </div>
