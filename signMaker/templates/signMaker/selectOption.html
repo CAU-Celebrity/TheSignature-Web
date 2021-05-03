@@ -32,6 +32,22 @@
 #showLetter {
     background-color: #f1efef;
 }
+
+.desc {
+    font-weight: bold;
+}
+
+.desc2 {
+    background-color: #f1efef;
+    font-size: 14px;
+    color: #757272;
+}
+
+.example {
+    text-align: left;
+    background-color: #f1efef;
+    font-size: 10px;
+}
 <script>
 function nameCheck() {
 
@@ -176,14 +192,22 @@ function getName() {
                 <div class="desc">
                     원하는 스타일을 선택해주세요.
                 </div><br/>
-                <input type="checkbox" name="chk-style" value='round'> 둥글
-                <input type="checkbox" name="chk-style" value='pointy'> 뾰족
-                <br/>
-                <input type="checkbox" name="chk-style" value='long'> 길쭉
-                <input type="checkbox" name="chk-style" value='flat'> 납작
-                <br/>
-                <input type="checkbox" name="chk-style" value='visible'> 뚜렷
-                <input type="checkbox" name="chk-style" value='invisible'> 흐릿
+                <div class="desc2">
+                    1에서 선택한 스타일을 바탕으로, 2와 3의 선택이 누적됩니다.<br> 1에서 둘 다 선택할 경우, 둘 중 하나가 반영된 서명이 제작됩니다.<br>
+                    <br>
+                    <div class='example'>
+                        예 1) Roundy & Long & Legible & Illegible => Roundy & Long & Legible & Illegible<br> 예 2) Roundy & Pointy & Long => Roundy & Long || Pointy & Long<br>
+                    </div>
+                </div><br/> 1.
+                <input type="checkbox" name="chk-style" value='round'> Roundy
+                <!-- <font size=3 title='둥글둥글해요'>둥근둥근</font> -->
+                <input type="checkbox" name="chk-style" value='pointy'> Pointy
+                <br/> 2.
+                <input type="checkbox" name="chk-style" value='long'> Long
+                <input type="checkbox" name="chk-style" value='flat'> Flat
+                <br/> 3.
+                <input type="checkbox" name="chk-style" value='legible'> Legible
+                <input type="checkbox" name="chk-style" value='illegible'> Illegible
             </div>
 
             <div class="split" id='line2' style="display: none">
