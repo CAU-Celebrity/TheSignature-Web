@@ -2,12 +2,14 @@ from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.exceptions import ImproperlyConfigured
-import os, json   
+import os
+import json
 
 secret_file = os.path.realpath('./secrets.json')
 
 with open(secret_file) as f:
-    secrets =  json.loads(f.read())
+    secrets = json.loads(f.read())
+
 
 def get_secret(key, secrets=secrets):
     try:
@@ -17,11 +19,29 @@ def get_secret(key, secrets=secrets):
         raise ImproperlyConfigured(error_msg)
 
 
-def drawingPage(request):
-    return render(request, 'signMaker/drawing.html')
+def session_existence(request):
+    if 'user_email' not in request.session:
+        return False
+    else:
+        return True
 
-def createPage(request):
-    return render(request, 'signMaker/signCreate.html')
+
+def drawingPage(request):
+    if session_existence(request):
+        return render(request, 'signMaker/drawing.html')
+    else:
+        return redirect('login')
+
+
+def mainPage(request):
+    if session_existence(request):
+        return render(request, 'signMaker/signCreate.html')
+    else:
+        return redirect('login')
+
 
 def watermarkPage(request):
-    return render(request, 'signMaker/watermark.html')
+    if session_existence(request):
+         return render(request, 'signMaker/watermark.html')
+    else:
+        return redirect('login')

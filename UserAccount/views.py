@@ -170,8 +170,10 @@ def save_session(request, user_email):
         request.session['user_name'] = row[0]
 
 def expire_session(request):
-    del request.session['user_email']
-    del request.session['user_name']
+    if 'user_email' in request.session:
+        del request.session['user_email']
+    if 'user_name' in request.session:
+        del request.session['user_name']
 
 def session_existence(request):
     if 'user_email' not in request.session:
