@@ -4,7 +4,6 @@
 
 
 <style>
-</style>
 .makeSign {
     text-align: center;
     align-items: center;
@@ -48,6 +47,7 @@
     background-color: #f1efef;
     font-size: 10px;
 }
+</style>
 <script>
 function nameCheck() {
 
@@ -117,6 +117,24 @@ function delList() {
 
 }
 
+function sendFormReq(path, params, method='get') {
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+
+        for (const key in params) {
+        if (params.hasOwnProperty(key)) {
+            const hiddenField = document.createElement('input');
+            hiddenField.type = 'hidden';
+            hiddenField.name = key;
+            hiddenField.value = params[key];
+            form.appendChild(hiddenField);
+        }
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
 function makeSign() {
 
     const style = 'input[name="chk-style"]:checked';
@@ -140,11 +158,19 @@ function makeSign() {
         j++;
     });
 
-
     var nameArr = getName();
     console.log(nameArr);
     console.log(styles);
     console.log(letters);
+
+    // Pass the choices to backend
+    path = "./passOptions/"
+    param = {
+        "name": nameArr,
+        "options": styles,
+        "pointLetter": letters
+    }
+    sendFormReq(path, param, "get");
 }
 
 function getName() {
@@ -163,7 +189,6 @@ function getName() {
 }
 </script>
 
-
 <div class="pageName">
             서명 만들기 >>
         </div><br/><br/><br/><br/><br/><br/>
@@ -180,7 +205,7 @@ function getName() {
                 <input type="text" id="name-input" onkeydown="delList()">
             </div>
             <br/>
-            <button class="btn" id="nameinputbtn" style="background-color: #a39a86; color: rgb(243, 236, 231);" onclick="nameCheck()">조건 선택하기</button>
+            <button class="btn" id="nameinputbtn" style="background-color: #a39a86; color: rgb(243, 236, 231); cursor: pointer;" onclick="nameCheck()">조건 선택하기</button>
 
             <div class="split" id='line1' style="display: none">
                 <br/><br/><br/>
@@ -223,7 +248,7 @@ function getName() {
                 </div>
             </div>
             <br/>
-            <button class="btn" id="makeSignbtn" style="background-color: #a39a86; color: rgb(243, 236, 231); display: none;" onclick="makeSign()" >서명 만들기</button>
+            <button class="btn" id="makeSignbtn" style="background-color: #a39a86; color: rgb(243, 236, 231); cursor: pointer; display: none;" onclick="makeSign()" >서명 만들기</button>
 
         </div>
 

@@ -35,7 +35,7 @@ def drawingPage(request):
 
 def mainPage(request):
     if session_existence(request):
-        return render(request, 'signMaker/signCreate.html')
+        return render(request, 'signMaker/selectOption.html')
     else:
         return redirect('login')
 
@@ -45,3 +45,18 @@ def watermarkPage(request):
          return render(request, 'signMaker/watermark.html')
     else:
         return redirect('login')
+    
+    
+def passOptions(request):
+    # return redirect('signCreate', request.GET)
+    data = {
+        "name": request.GET['name'],
+        "options": request.GET['options'],
+        "pointLetter": request.GET['pointLetter']
+    }
+    return render(request, 'signMaker/signCreate.html', data)
+    
+
+
+# def signCreate(request):
+#     return render(request, 'signMaker/signCreate.html')

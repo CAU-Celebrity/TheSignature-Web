@@ -6,7 +6,6 @@ from .views import Activate
 
 urlpatterns = [
     path('',views.intro,name="intro"),
-    path('admin/', admin.site.urls),
     path('login/', views.page_login, name="login"),
     path('signup/', views.sign_up, name="sign_up"),
     path('signup/emailcheck/', views.email_check, name="email_check"),
