@@ -51,7 +51,7 @@ input[type=range]::-webkit-slider-runnable-track {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-#jsSave {
+#jsSave, #jsReset {
     background-color: rgb(99, 93, 93);
     color: rgb(243, 243, 243);
     padding: 10px 14px;
@@ -105,6 +105,7 @@ input[type=range]::-webkit-slider-runnable-track {
                 <div class="controls__btns">
                     <!-- <button id="jsMode">Drawing</button> -->
                     <button id="jsSave">Save</button>
+                    <button id="jsReset">Reset</button>
                 </div>
             </div>
         </div>
@@ -115,6 +116,7 @@ const range = document.getElementById("jsRange");
 const colors = document.getElementsByClassName("jsColor");
 const mode = document.getElementById("jsMode");
 const save = document.getElementById("jsSave");
+const reset = document.getElementById("jsReset");
 
 const INITIAL_COLOR = "black";
 var CANVAS_WIDTH = 600;
@@ -212,6 +214,10 @@ function handleSaveClick() {
     link.download = "myImage";
     link.click();
 }
+function handleResetClick() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
 
 function handleCanvasClick() {
     if (filling) {
@@ -239,6 +245,9 @@ if (range) {
 }
 if (save) {
     save.addEventListener("click", handleSaveClick);
+}
+if (reset) {
+    reset.addEventListener("click", handleResetClick);
 }
 </script>
 
