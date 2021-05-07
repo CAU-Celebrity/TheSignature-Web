@@ -159,14 +159,18 @@ function makeSign() {
     });
 
     var nameArr = getName();
-    console.log(nameArr);
+    var name = "";
+    for(var i=0; i<nameArr.length; i++) {
+        name += nameArr[i];
+    }
+    console.log(name);
     console.log(styles);
     console.log(letters);
 
     // Pass the choices to backend
     path = "./passOptions/"
     param = {
-        "name": nameArr,
+        "name": name,
         "options": styles,
         "pointLetter": letters
     }

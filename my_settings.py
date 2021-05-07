@@ -3,7 +3,8 @@ from django.core.exceptions import ImproperlyConfigured
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-secret_file = os.path.join(BASE_DIR, 'TheSignature/secrets.json')
+# Below path would be different for each hardware
+secret_file = os.path.join(BASE_DIR, 'TheSignature-Web/secrets.json')
 
 with open(secret_file) as f:
     secrets =  json.loads(f.read())

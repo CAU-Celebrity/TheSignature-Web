@@ -1,6 +1,7 @@
 {% extends 'theSignature/base.html' %}
 {% block title%} :: 나만의 서명 제작하기 :: {% endblock %}
 {% block content %}
+{% load static %}
 
 <style>
 .selected-info {
@@ -182,20 +183,20 @@ table {
         <br/><br/><br/><br/>
         <div class="signatures">
             <div class="sign">
-                <img src="" alt="" loading="lazy" width="300px">
+                <img src="{% static 'ml_result/handwriting_name01.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px">
                 <a href='' download="signature">
                     <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
                 <!-- <button type="submit" onclick="window.open('img/sign.png')">Download!</button> -->
             </div>
             <div class="sign">
-                <img src="" alt="" loading="lazy" width="300px">
+                <img src="{% static 'ml_result/handwriting_name02.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px">
                 <a href='' download="signature">
                     <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
             </div>
             <div class="sign">
-                <img src="" alt="" loading="lazy" width="300px">
+                <img src="{% static 'ml_result/handwriting_name03.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px">
                 <a href='' download="signature">
                     <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>

@@ -4,6 +4,9 @@ from django.shortcuts import redirect, render
 from django.core.exceptions import ImproperlyConfigured
 import os
 import json
+import sys
+sys.path.insert(1, 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml')
+import ml_model
 
 secret_file = os.path.realpath('./secrets.json')
 
@@ -48,7 +51,10 @@ def watermarkPage(request):
     
     
 def passOptions(request):
-    # return redirect('signCreate', request.GET)
+    ml_model.makeResult(request.GET['name'], '01')
+    ml_model.makeResult(request.GET['name'], '02')
+    ml_model.makeResult(request.GET['name'], '03')
+
     data = {
         "name": request.GET['name'],
         "options": request.GET['options'],
@@ -56,7 +62,3 @@ def passOptions(request):
     }
     return render(request, 'signMaker/signCreate.html', data)
     
-
-
-# def signCreate(request):
-#     return render(request, 'signMaker/signCreate.html')
