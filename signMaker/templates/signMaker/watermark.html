@@ -122,31 +122,30 @@ var CANVAS_HEIGHT = 400;
 
 var background = new Image();
 
-var loadImage = function(event) {
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    background.src = URL.createObjectURL(event.target.files[0]);
-    background.crossOrigin = "Anonymous";
-    background.onload = function() {
-        getSize(background.width, background.height);
-        console.log(background);
-        background.width = CANVAS_WIDTH;
-        background.height = CANVAS_HEIGHT;
-        ctx.drawImage(background, 0, 0, background.width, background.height,
-            0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-
-    }
-};
-
-
-<!--background.src = 'img/IMG_8342.jpg';-->
+background.src = 'img/IMG_8342.jpg';
 background.crossOrigin = "Anonymous";
 background.onload = function() {
     ctx.drawImage(background, 0, 0, background.width, background.height,
         0, 0, canvas.width, canvas.height);
-    console.log(background.width, background.height);
 
 }
+
+var loadImage = function(event) {
+background = new Image();
+    background.src = URL.createObjectURL(event.target.files[0]);
+    background.crossOrigin = "Anonymous";
+    background.onload = function() {
+            var scale = Math.max(canvas.width / background.width, canvas.height / background.height);
+ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // get the scale
+        var scale = Math.min(canvas.width / background.width, canvas.height / background.height);
+        // get the top left position of the image
+        var x = (canvas.width / 2) - (background.width / 2) * scale;
+        var y = (canvas.height / 2) - (background.height / 2) * scale;
+        ctx.drawImage(background, x, y, background.width * scale, background.height * scale);
+}
+};
 
 canvas.width = CANVAS_WIDTH;
 canvas.height = CANVAS_HEIGHT;
@@ -159,46 +158,6 @@ ctx.lineWidth = 1.5;
 
 let painting = false;
 let filling = false;
-
-
-function getSize(imgWidth, imgHeight) {
-    var canWidth, canHeight;
-    if (imgWidth > imgHeight) {
-        if (imgWidth <= 600) {
-            canWidth = imgWidth;
-            canHeight = imgHeight;
-        } else {
-            canWidth = 600;
-            // canHeight = int((imgHeight / imgWidth) * 600);
-            canHeight = (imgHeight / imgWidth) * 600;
-
-        }
-    } else if (imgWidth < imgHeight) {
-        if (imgHeight <= 600) {
-            canWidth = imgWidth;
-            canHeight = imgHeight;
-        } else {
-            canHeight = 600;
-            canWidth = (imgWidth / imgHeight) * 600;
-
-            // canWidth = int((imgWidth / imgHeight) * 600);
-        }
-    } else {
-        // imgWidth == imgHeight
-        canWidth = 600;
-        canHeight = 600;
-    }
-
-    console.log(canWidth, canHeight);
-    CANVAS_WIDTH = canWidth;
-    CANVAS_HEIGHT = canHeight;
-
-    canvas.style.setProperty('width', CANVAS_WIDTH + 'px');
-    canvas.style.setProperty('height', CANVAS_HEIGHT + 'px');
-
-    // return canWidth, canHeight;
-
-}
 
 function stopPainting() {
     painting = false;
