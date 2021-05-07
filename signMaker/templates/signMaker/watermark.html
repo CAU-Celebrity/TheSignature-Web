@@ -2,4 +2,253 @@
 {% block title%} :: 워터마크 적용하기 :: {% endblock %}
 {% block content %}
 
+<style>
+.watermark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.imgUpload {
+    background-color: #cfcfcb;
+    color: rgb(58, 57, 57);
+    padding: 12px 12px;
+    border: none;
+    border-radius: 12px;
+    margin: auto;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.imgUpload:hover {
+    background-color: #50504f;
+    color: rgb(187, 184, 184);
+}
+
+.canvas {
+    /* margin-left: 40px;
+    margin-bottom: 10px; */
+    width: 600px;
+    height: 400px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.controls {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background-color: rgb(114, 171, 240);
+    /* backg: black; */
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+#jsSave, #jsReset {
+    background-color: rgb(99, 93, 93);
+    color: rgb(243, 243, 243);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
+    /* margin: auto;  */
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.controls .controls__colors {
+    display: flex;
+}
+
+.controls__colors .controls__color {
+    width: 30px;
+    height: 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+    margin: 3px;
+    color: #242424;
+}
+</style>
+<div class="pageName">
+            워터마크 적용하기 >>
+        </div><br/><br/><br/><br/><br/><br/>
+        <div class='watermark'>
+            <p><input type="file" accept="image/*" name="image" id="file" onchange="loadImage(event)" style="display: none;"></p>
+            <p><label for="file" class='imgUpload' style="cursor: pointer; ">이미지 업로드</label></p>
+            <br/>
+            <canvas id="jsCanvas" class="canvas"></canvas>
+            <div class="controls">
+                <div class="controls__range">
+                    <input type="range" id="jsRange" min="0.1" max="7.0" value="3.0" step="0.1" />
+                </div>
+
+                <div class="controls__colors" id="jsColors">
+                    <div class="controls__color jsColor" style="background-color: #000000"></div>
+                    <div class="controls__color jsColor" style="background-color: #242424"></div>
+                    <div class="controls__color jsColor" style="background-color: #444444"></div>
+                    <div class="controls__color jsColor" style="background-color: #727272"></div>
+                    <div class="controls__color jsColor" style="background-color: #a1a1a1"></div>
+                    <div class="controls__color jsColor" style="background-color: #d4d4d4"></div>
+                    <div class="controls__color jsColor" style="background-color: #ffffff"></div>
+
+                </div>
+                <div class="controls__btns">
+                    <!-- <button id="jsMode">Drawing</button> -->
+                    <button id="jsSave">Save</button>
+                    <button id="jsReset">Reset</button>
+                </div>
+            </div>
+        </div>
+<script>
+const canvas = document.getElementById("jsCanvas");
+const ctx = canvas.getContext("2d");
+const range = document.getElementById("jsRange");
+const colors = document.getElementsByClassName("jsColor");
+const mode = document.getElementById("jsMode");
+const save = document.getElementById("jsSave");
+const reset = document.getElementById("jsReset");
+
+const INITIAL_COLOR = "black";
+var CANVAS_WIDTH = 600;
+var CANVAS_HEIGHT = 400;
+
+var background = new Image();
+
+background.src = 'img/IMG_8342.jpg';
+background.crossOrigin = "Anonymous";
+background.onload = function() {
+    ctx.drawImage(background, 0, 0, background.width, background.height,
+        0, 0, canvas.width, canvas.height);
+
+}
+
+var loadImage = function(event) {
+background = new Image();
+    background.src = URL.createObjectURL(event.target.files[0]);
+    background.crossOrigin = "Anonymous";
+    background.onload = function() {
+            var scale = Math.max(canvas.width / background.width, canvas.height / background.height);
+ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // get the scale
+        var scale = Math.min(canvas.width / background.width, canvas.height / background.height);
+        // get the top left position of the image
+        var x = (canvas.width / 2) - (background.width / 2) * scale;
+        var y = (canvas.height / 2) - (background.height / 2) * scale;
+        ctx.drawImage(background, x, y, background.width * scale, background.height * scale);
+}
+};
+
+canvas.width = CANVAS_WIDTH;
+canvas.height = CANVAS_HEIGHT;
+
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+ctx.strokeStyle = INITIAL_COLOR;
+ctx.fillStyle = INITIAL_COLOR;
+ctx.lineWidth = 1.5;
+
+let painting = false;
+let filling = false;
+
+function stopPainting() {
+    painting = false;
+}
+
+function startPainting() {
+    painting = true;
+}
+
+function onMouseMove(evnet) {
+    const x = event.offsetX;
+    const y = event.offsetY;
+    // console.log(x, y);
+    if (!painting) {
+        // console.log("현 위치 감지 : ", x, y);
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    } else {
+        // console.log("현 위치부터 라인그리기 ", x, y);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
+}
+
+function handleColorClick(event) {
+    const color = event.target.style.backgroundColor;
+    // console.log(color);
+    ctx.strokeStyle = color;
+    ctx.fillStyle = color;
+}
+
+function handleRangeChange(event) {
+    // console.log(event.target.value);
+    const size = event.target.value;
+    ctx.lineWidth = size;
+}
+
+function handleModeClick() {
+    if (filling === true) {
+        filling = false;
+        mode.innerText = "Drawing";
+    } else {
+        filling = true;
+        mode.innerText = "fill";
+    }
+}
+
+function handleSaveClick() {
+    const image = canvas.toDataURL();
+    const link = document.createElement("a");
+    link.href = image;
+    link.download = "myImage";
+    link.click();
+}
+function handleResetClick() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+function handleCanvasClick() {
+    if (filling) {
+        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    }
+}
+// 마우스 우클릭 방지
+function handleCM(event) {
+    event.preventDefault();
+}
+Array.from(colors).forEach(color =>
+    color.addEventListener("click", handleColorClick)
+);
+if (canvas) {
+    canvas.addEventListener("mousemove", onMouseMove);
+    canvas.addEventListener("mousedown", startPainting);
+    canvas.addEventListener("mouseup", stopPainting);
+    canvas.addEventListener("mouseleave", stopPainting);
+    canvas.addEventListener("click", handleCanvasClick);
+    canvas.addEventListener("contextmenu", handleCM);
+}
+
+if (range) {
+    range.addEventListener("input", handleRangeChange);
+}
+if (save) {
+    save.addEventListener("click", handleSaveClick);
+}
+if (reset) {
+    reset.addEventListener("click", handleResetClick);
+}
+</script>
+
 {% endblock %}
