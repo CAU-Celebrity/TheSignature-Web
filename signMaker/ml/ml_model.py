@@ -14,7 +14,6 @@ import os
 # 2. 모델로 각 알파벳 생성
 
 def generate(name, num):
-  # model_name = '/content/gdrive/My Drive/GAN-model/'+ name[num] + '-generator'
   model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/' + name[num] + '-generator'
   model = tf.keras.models.load_model(model_name, compile=False)
   new_generated_image = model(tf.random.normal([16, 100]), training=False)
@@ -27,9 +26,7 @@ def generate(name, num):
  # 3. 알파벳 이미지 공백 없게 자르기
 
 def crop_image(num):
-  # image = cv2.imread('./static/ml_result/original'+str(num)+'.jpg', 0)
   image = cv2.imread('./signMaker/static/ml_result/original'+str(num)+'.jpg', 0)
-
   blur = cv2.GaussianBlur(image, ksize=(3,3), sigmaX=0)
   ret, thresh1 = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
   edged = cv2.Canny(blur, 10, 250)
