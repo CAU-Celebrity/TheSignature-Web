@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from PIL import Image
 import numpy as np
 import cv2
+import os
 
 # 1. 이름 입력 받기
 
@@ -12,20 +13,23 @@ import cv2
 
 # 2. 모델로 각 알파벳 생성
 
-def generate(num):
+def generate(name, num):
   # model_name = '/content/gdrive/My Drive/GAN-model/'+ name[num] + '-generator'
-  model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/a-generator'
+  model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/' + name[num] + '-generator'
   model = tf.keras.models.load_model(model_name, compile=False)
   new_generated_image = model(tf.random.normal([16, 100]), training=False)
   plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
   plt.axis('off')
-  plt.savefig('./static/ml_result/original'+str(num)+'.jpg')
+  # plt.savefig('./static/ml_result/original'+str(num)+'.jpg')
+  plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
 
 
  # 3. 알파벳 이미지 공백 없게 자르기
 
 def crop_image(num):
-  image = cv2.imread('./static/ml_result/original'+str(num)+'.jpg', 0)
+  # image = cv2.imread('./static/ml_result/original'+str(num)+'.jpg', 0)
+  image = cv2.imread('./signMaker/static/ml_result/original'+str(num)+'.jpg', 0)
+
   blur = cv2.GaussianBlur(image, ksize=(3,3), sigmaX=0)
   ret, thresh1 = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
   edged = cv2.Canny(blur, 10, 250)
@@ -63,8 +67,11 @@ def crop_image(num):
 
 merged_image = np.zeros((2, 2))
 
-def merge_image(single_image):
+def merge_image(single_image, num):
   global merged_image
+
+  if num == 0:
+    merged_image = np.zeros((2, 2))
 
   if len(merged_image) < len(single_image):
     width = len(merged_image[0])
@@ -83,9 +90,9 @@ def merge_image(single_image):
 def makeResult(name, str_number):
 
   for num in range(len(name)):
-    generate(num)
+    generate(name, num)
     single_image = crop_image(num)
-    merge_image(single_image)
+    merge_image(single_image, num)
 
   image = Image.fromarray(merged_image.astype('uint8'), 'L')
-  image.save('./static/ml_result/handwriting_name' + str_number + '.jpg')
+  image.save('./signMaker/static/ml_result/handwriting_name' + str_number + '.jpg')
