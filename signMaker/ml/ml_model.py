@@ -19,7 +19,6 @@ def generate(name, num):
   new_generated_image = model(tf.random.normal([16, 100]), training=False)
   plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
   plt.axis('off')
-  # plt.savefig('./static/ml_result/original'+str(num)+'.jpg')
   plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
 
 
