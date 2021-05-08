@@ -29,9 +29,10 @@
 .canvas {
     /* margin-left: 40px;
     margin-bottom: 10px; */
+    left: 330px;
     width: 600px;
     height: 400px;
-    background-color: white;
+    background-color: transparent;
     border-radius: 15px;
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
@@ -51,12 +52,16 @@ input[type=range]::-webkit-slider-runnable-track {
     box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-#jsSave, #jsReset {
+.controls__btns {
+    margin-left: 130px;
+}
+
+#jsSave {
     background-color: rgb(99, 93, 93);
     color: rgb(243, 243, 243);
     padding: 10px 14px;
     margin-bottom: 10px;
-    margin-top: 10px;
+    margin-top: 3px;
     border: none;
     border-radius: 12px;
     /* margin: auto;  */
@@ -65,8 +70,22 @@ input[type=range]::-webkit-slider-runnable-track {
     cursor: pointer;
 }
 
+#jsMode,
+#jsReset {
+    cursor: pointer;
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    font-size: 10px;
+    padding: 8px 10px;
+    background-color: rgb(179, 174, 174);
+    color: rgb(27, 27, 27);
+}
+
 .controls .controls__colors {
     display: flex;
+    margin-left:130px;
 }
 
 .controls__colors .controls__color {
@@ -78,20 +97,74 @@ input[type=range]::-webkit-slider-runnable-track {
     margin: 3px;
     color: #242424;
 }
+
+
+@media (max-width: 1300px) {
+    .canvas {
+        left: 330px;
+    }
+}
+
+@media (max-width: 1120px) {
+    .canvas {
+        left: 280px;
+    }
+}
+
+@media (max-width: 900px) {
+    .canvas {
+        left: 240px;
+    }
+}
+
+@media (max-width: 855px) {
+    .canvas {
+        left: 180px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ipad */
+    .canvas {
+        left: 120px;
+    }
+}
+
+@media (max-width: 740px) {
+    .canvas {
+        left: 80px;
+    }
+}
+
+@media (max-width: 639px) {
+    .canvas {
+        left: 70px;
+    }
+}
+
+@media (max-width: 590px) {
+    .canvas {
+        left: 40px;
+    }
+}
 </style>
 <div class="pageName">
             워터마크 적용하기 >>
         </div><br/><br/><br/><br/><br/><br/>
-        <div class='watermark'>
+        <div class='watermark' style="position: relative;">
             <p><input type="file" accept="image/*" name="image" id="file" onchange="loadImage(event)" style="display: none;"></p>
-            <p><label for="file" class='imgUpload' style="cursor: pointer; ">이미지 업로드</label></p>
-            <br/>
-            <canvas id="jsCanvas" class="canvas"></canvas>
+            <p><label for="file" class='imgUpload' style="cursor: pointer; position: absolute;">이미지 업로드</label></p>
+            <br/><br/>
+            <div class="controls__canvas">
+                <canvas id="jsCanvas1" class="canvas" style="position: absolute; z-index: 1;"></canvas>
+                <canvas id="jsCanvas2" class="canvas" style="position: absolute; z-index: 2;"></canvas>
+            </div>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <div class="controls">
                 <div class="controls__range">
-                    <input type="range" id="jsRange" min="0.1" max="7.0" value="3.0" step="0.1" />
+                    <input type="range" id="jsRange" min="0.1" max="7.0" value="3.0" step="0.1" style="position: absolute;" />
                 </div>
-
+                <br/>
                 <div class="controls__colors" id="jsColors">
                     <div class="controls__color jsColor" style="background-color: #000000"></div>
                     <div class="controls__color jsColor" style="background-color: #242424"></div>
@@ -102,64 +175,77 @@ input[type=range]::-webkit-slider-runnable-track {
                     <div class="controls__color jsColor" style="background-color: #ffffff"></div>
 
                 </div>
+
                 <div class="controls__btns">
-                    <!-- <button id="jsMode">Drawing</button> -->
-                    <button id="jsSave">Save</button>
+                    <button id="jsMode">Erase</button>
                     <button id="jsReset">Reset</button>
+                </div>
+                <div class="controls__btns">
+                    <button id="jsSave">Save</button>
                 </div>
             </div>
         </div>
 <script>
-const canvas = document.getElementById("jsCanvas");
-const ctx = canvas.getContext("2d");
+var bgImg = new Image();
+
+const INITIAL_COLOR = "black";
+var CANVAS_WIDTH = 600;
+var CANVAS_HEIGHT = 400;
+
+var layer1 = document.getElementById("jsCanvas1");
+var ctx1 = layer1.getContext("2d");
+var layer2 = document.getElementById("jsCanvas2");
+var ctx2 = layer2.getContext("2d");
+
+
 const range = document.getElementById("jsRange");
 const colors = document.getElementsByClassName("jsColor");
 const mode = document.getElementById("jsMode");
 const save = document.getElementById("jsSave");
 const reset = document.getElementById("jsReset");
 
-const INITIAL_COLOR = "black";
-var CANVAS_WIDTH = 600;
-var CANVAS_HEIGHT = 400;
+let painting = false;
+let eraser = true;
 
-var background = new Image();
+<!--bgImg.src = "img/IMG_8342.jpg";-->
+ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-background.src = 'img/IMG_8342.jpg';
-background.crossOrigin = "Anonymous";
-background.onload = function() {
-    ctx.drawImage(background, 0, 0, background.width, background.height,
-        0, 0, canvas.width, canvas.height);
 
-}
+bgImg.onload = function() {
+        ctx1.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height, 0, 0, layer1.width, layer1.height);
+    }
 
 var loadImage = function(event) {
-background = new Image();
-    background.src = URL.createObjectURL(event.target.files[0]);
-    background.crossOrigin = "Anonymous";
-    background.onload = function() {
-            var scale = Math.max(canvas.width / background.width, canvas.height / background.height);
-ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    bgImg = new Image();
+    bgImg.src = URL.createObjectURL(event.target.files[0]);
+    bgImg.crossOrigin = "Anonymous";
+
+    bgImg.onload = function() {
+        var scale = Math.max(layer1.width / bgImg.width, layer1.height / bgImg.height);
+
+        ctx1.fillStyle = "white";
+        ctx2.fillStyle = "rgba(0,0,0,0)";
+
+        ctx1.fillRect(0, 0, layer1.width, layer1.height);
+
         // get the scale
-        var scale = Math.min(canvas.width / background.width, canvas.height / background.height);
+        var scale = Math.min(layer1.width / bgImg.width, layer1.height / bgImg.height);
         // get the top left position of the image
-        var x = (canvas.width / 2) - (background.width / 2) * scale;
-        var y = (canvas.height / 2) - (background.height / 2) * scale;
-        ctx.drawImage(background, x, y, background.width * scale, background.height * scale);
+        var x = (layer1.width / 2) - (bgImg.width / 2) * scale;
+        var y = (layer1.height / 2) - (bgImg.height / 2) * scale;
+        ctx1.drawImage(bgImg, x, y, bgImg.width * scale, bgImg.height * scale);
+
+    }
 }
-};
 
-canvas.width = CANVAS_WIDTH;
-canvas.height = CANVAS_HEIGHT;
 
-ctx.fillStyle = "white";
-ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-ctx.strokeStyle = INITIAL_COLOR;
-ctx.fillStyle = INITIAL_COLOR;
-ctx.lineWidth = 1.5;
+ctx2.fillStyle = "rgba(0,0,0,0)";
+ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+ctx2.strokeStyle = INITIAL_COLOR;
+ctx2.fillStyle = INITIAL_COLOR;
+ctx2.lineWidth = 1.5;
 
-let painting = false;
-let filling = false;
+
 
 function stopPainting() {
     painting = false;
@@ -169,61 +255,73 @@ function startPainting() {
     painting = true;
 }
 
-function onMouseMove(evnet) {
-    const x = event.offsetX;
-    const y = event.offsetY;
-    // console.log(x, y);
+function getMousePos(canvas, evt) {
+    var rect = canvas.getBoundingClientRect();
+    return {
+        x: (evt.clientX - rect.left) / (rect.right - rect.left) * canvas.width,
+        y: (evt.clientY - rect.top) / (rect.bottom - rect.top) * canvas.height
+    };
+}
+
+function onMouseMove(event) {
+    const x = getMousePos(layer2, event).x
+    const y = getMousePos(layer2, event).y
     if (!painting) {
         // console.log("현 위치 감지 : ", x, y);
-        ctx.beginPath();
-        ctx.moveTo(x, y);
+        ctx2.beginPath();
+        ctx2.moveTo(x, y);
     } else {
         // console.log("현 위치부터 라인그리기 ", x, y);
-        ctx.lineTo(x, y);
-        ctx.stroke();
+        ctx2.lineTo(x, y);
+        ctx2.stroke();
     }
 }
 
 function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
-    // console.log(color);
-    ctx.strokeStyle = color;
-    ctx.fillStyle = color;
+    ctx2.strokeStyle = color;
+    ctx2.fillStyle = color;
+
+
 }
 
 function handleRangeChange(event) {
-    // console.log(event.target.value);
     const size = event.target.value;
-    ctx.lineWidth = size;
+    ctx2.lineWidth = size;
 }
 
 function handleModeClick() {
-    if (filling === true) {
-        filling = false;
-        mode.innerText = "Drawing";
+    console.log(eraser);
+    if (eraser === true) {
+        eraser = false;
+        ctx2.globalCompositeOperation = "destination-out";
+
+        mode.innerText = "Draw";
     } else {
-        filling = true;
-        mode.innerText = "fill";
+        eraser = true;
+
+        ctx2.globalCompositeOperation = "source-over";
+        ctx2.strokeStyle = 'black';
+        ctx2.fillStyle = 'black';
+        mode.innerText = "Erase";
     }
 }
 
 function handleSaveClick() {
-    const image = canvas.toDataURL();
+    ctx1.drawImage(layer2, 0, 0);
+    const image = layer1.toDataURL();
     const link = document.createElement("a");
     link.href = image;
     link.download = "myImage";
     link.click();
 }
+
+
+
 function handleResetClick() {
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx2.clearRect(0, 0, layer2.width, layer2.height);
 }
 
-function handleCanvasClick() {
-    if (filling) {
-        ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-    }
-}
 // 마우스 우클릭 방지
 function handleCM(event) {
     event.preventDefault();
@@ -231,13 +329,12 @@ function handleCM(event) {
 Array.from(colors).forEach(color =>
     color.addEventListener("click", handleColorClick)
 );
-if (canvas) {
-    canvas.addEventListener("mousemove", onMouseMove);
-    canvas.addEventListener("mousedown", startPainting);
-    canvas.addEventListener("mouseup", stopPainting);
-    canvas.addEventListener("mouseleave", stopPainting);
-    canvas.addEventListener("click", handleCanvasClick);
-    canvas.addEventListener("contextmenu", handleCM);
+if (layer2) {
+    layer2.addEventListener("mousemove", onMouseMove);
+    layer2.addEventListener("mousedown", startPainting);
+    layer2.addEventListener("mouseup", stopPainting);
+    layer2.addEventListener("mouseleave", stopPainting);
+    layer2.addEventListener("contextmenu", handleCM);
 }
 
 if (range) {
@@ -248,6 +345,9 @@ if (save) {
 }
 if (reset) {
     reset.addEventListener("click", handleResetClick);
+}
+if (mode) {
+    mode.addEventListener("click", handleModeClick);
 }
 </script>
 
