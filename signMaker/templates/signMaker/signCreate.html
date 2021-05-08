@@ -135,6 +135,18 @@ table {
 }
 </style>
 
+<script>
+    function preserveResult(file_name) {
+        $.ajax({
+            url: 'preserveResultAction/',
+            type: 'GET',
+            async: false,
+            data: {'file_name': file_name},
+            success: function(data) {
+            }
+        })
+    }
+</script>
 
 <div class="pageName">
             서명 만들기 >>
@@ -166,11 +178,9 @@ table {
                                     조건 재선택
                                 </div>
                             </a>
-
                         </td>
                         <td>
-                            <div class="btn actionBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:60px;">새로 고침</div>
-
+                            <div class="btn actionBtn" onclick="window.location.reload()" style="background-color: #a39a86; color: rgb(243, 236, 231); width:60px;">새로고침</div>
                         </td>
                     </tr>
                 </table>
@@ -185,20 +195,20 @@ table {
             <div class="sign">
                 <img src="{% static 'ml_result/handwriting_name01.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px" style="height: 150px;">
                 <a href="{% static 'ml_result/handwriting_name01.jpg' %}" download="signature">
-                    <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
+                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name01.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
                 <!-- <button type="submit" onclick="window.open('img/sign.png')">Download!</button> -->
             </div>
             <div class="sign">
                 <img src="{% static 'ml_result/handwriting_name02.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px" style="height: 150px;">
                 <a href="{% static 'ml_result/handwriting_name02.jpg' %}" download="signature">
-                    <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
+                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name02.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
             </div>
             <div class="sign">
                 <img src="{% static 'ml_result/handwriting_name03.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px" style="height: 150px;">
                 <a href="{% static 'ml_result/handwriting_name03.jpg' %}" download="signature">
-                    <div class="btn downloadBtn" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
+                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name03.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
             </div>
         </div>
