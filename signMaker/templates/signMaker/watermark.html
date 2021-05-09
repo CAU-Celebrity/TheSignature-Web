@@ -97,6 +97,22 @@ input[type=range]::-webkit-slider-runnable-track {
     color: #242424;
 }
 
+.controls__imgs {
+    /* display: flex; */
+    margin: 3px;
+    font-size: 10px;
+    padding: 2px;
+    /* align-items: center; */
+    margin-left: 130px;
+    margin-bottom: 5px;
+}
+
+.sign_img {
+    margin-left: 40px;
+    margin-top: 5px;
+    border-radius: 20px;
+    box-shadow: 3px 2px 3px rgb(240, 239, 239);
+}
 
 @media (max-width: 1300px) {
     .canvas {
@@ -157,6 +173,7 @@ input[type=range]::-webkit-slider-runnable-track {
             <div class="controls__canvas">
                 <canvas id="jsCanvas1" class="canvas" style="position: absolute; z-index: 1;"></canvas>
                 <canvas id="jsCanvas2" class="canvas" style="position: absolute; z-index: 2;"></canvas>
+                <canvas id="jsCanvas3" class="canvas" style="position: absolute; z-index: 3;"></canvas>
             </div>
             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
             <div class="controls">
@@ -179,14 +196,38 @@ input[type=range]::-webkit-slider-runnable-track {
                     <button id="jsMode">Erase</button>
                     <button id="jsReset">Reset</button>
                 </div>
+                <div class="controls__imgs">
+                    <div class="controls_img">
+                        <img class="sign_img" id="sign-img" src="img/sign.png" alt="" loading="lazy" width="120px"><br>
+                    </div>
+                    <div class="controls_img">
+                        <input type="radio" name="img-location" id="no-img" value="no-img" checked="checked">
+                        <label for="no-img"> None </label>
+                        <input type="radio" name="img-location" id="left-top" value="left-top">
+                        <label for="left-top">Left-Top</label>
+
+                        <input type="radio" name="img-location" id="left-bottom" value="left-bottom">
+                        <label for="left-bottom">Left-Bottom</label>
+                    </div>
+
+                    <div class="controls_img">
+
+                        <input type="radio" name="img-location" id="right-top" value="right-top">
+                        <label for="right-top">Right Top</label>
+
+                        <input type="radio" name="img-location" id="right-bottom" value="right-bottom">
+                        <label for="right-bottom">Right Bottom</label>
+
+                        <input type="radio" name="img-location" id="center" value="center">
+                        <label for="center">Center</label>
+                    </div>
+                </div>
                 <div class="controls__btns">
                     <button id="jsSave">Save</button>
                 </div>
             </div>
         </div>
 <script>
-var bgImg = new Image();
-
 const INITIAL_COLOR = "black";
 var CANVAS_WIDTH = 600;
 var CANVAS_HEIGHT = 400;
@@ -195,7 +236,8 @@ var layer1 = document.getElementById("jsCanvas1");
 var ctx1 = layer1.getContext("2d");
 var layer2 = document.getElementById("jsCanvas2");
 var ctx2 = layer2.getContext("2d");
-
+var layer3 = document.getElementById("jsCanvas3");
+var ctx3 = layer3.getContext("2d");
 
 const range = document.getElementById("jsRange");
 const colors = document.getElementsByClassName("jsColor");
@@ -203,16 +245,25 @@ const mode = document.getElementById("jsMode");
 const save = document.getElementById("jsSave");
 const reset = document.getElementById("jsReset");
 
-let painting = false;
-let eraser = true;
+var imgLoc = document.querySelectorAll('input[type="radio"][name="img-location"]');
+const sign_img = document.getElementById("sign-img");
+
+var bgImg = new Image();
+var signImg = new Image();
+
 
 <!--bgImg.src = "img/IMG_8342.jpg";-->
 ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+signImg.src = sign_img.src;
+ctx3.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 
 bgImg.onload = function() {
-        ctx1.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height, 0, 0, layer1.width, layer1.height);
-    }
+
+    ctx1.drawImage(bgImg, 0, 0, bgImg.width, bgImg.height, 0, 0, layer1.width, layer1.height);
+
+}
+
 
 var loadImage = function(event) {
     bgImg = new Image();
@@ -237,14 +288,14 @@ var loadImage = function(event) {
     }
 }
 
+ctx3.fillStyle = "rgba(0,0,0,0)";
+ctx3.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+ctx3.strokeStyle = INITIAL_COLOR;
+ctx3.fillStyle = INITIAL_COLOR;
+ctx3.lineWidth = 1.5;
 
-ctx2.fillStyle = "rgba(0,0,0,0)";
-ctx2.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-ctx2.strokeStyle = INITIAL_COLOR;
-ctx2.fillStyle = INITIAL_COLOR;
-ctx2.lineWidth = 1.5;
-
-
+let painting = false;
+let eraser = true;
 
 function stopPainting() {
     painting = false;
@@ -263,52 +314,55 @@ function getMousePos(canvas, evt) {
 }
 
 function onMouseMove(event) {
-    const x = getMousePos(layer2, event).x
-    const y = getMousePos(layer2, event).y
+
+    const x = getMousePos(layer3, event).x
+    const y = getMousePos(layer3, event).y
     if (!painting) {
         // console.log("현 위치 감지 : ", x, y);
-        ctx2.beginPath();
-        ctx2.moveTo(x, y);
+        ctx3.beginPath();
+        ctx3.moveTo(x, y);
     } else {
         // console.log("현 위치부터 라인그리기 ", x, y);
-        ctx2.lineTo(x, y);
-        ctx2.stroke();
+        ctx3.lineTo(x, y);
+        ctx3.stroke();
     }
 }
 
 function handleColorClick(event) {
     const color = event.target.style.backgroundColor;
-    ctx2.strokeStyle = color;
-    ctx2.fillStyle = color;
+    ctx3.strokeStyle = color;
+    ctx3.fillStyle = color;
 
 
 }
 
 function handleRangeChange(event) {
     const size = event.target.value;
-    ctx2.lineWidth = size;
+    ctx3.lineWidth = size;
 }
 
 function handleModeClick() {
     console.log(eraser);
     if (eraser === true) {
         eraser = false;
-        ctx2.globalCompositeOperation = "destination-out";
+        ctx3.globalCompositeOperation = "destination-out";
 
         mode.innerText = "Draw";
     } else {
         eraser = true;
-
-        ctx2.globalCompositeOperation = "source-over";
-        ctx2.strokeStyle = 'black';
-        ctx2.fillStyle = 'black';
+        ctx3.globalCompositeOperation = "source-over";
+        ctx3.strokeStyle = 'black';
+        ctx3.fillStyle = 'black';
         mode.innerText = "Erase";
     }
 }
 
 function handleSaveClick() {
     ctx1.drawImage(layer2, 0, 0);
+    ctx1.drawImage(layer3, 0, 0);
+
     const image = layer1.toDataURL();
+
     const link = document.createElement("a");
     link.href = image;
     link.download = "myImage";
@@ -319,6 +373,30 @@ function handleSaveClick() {
 
 function handleResetClick() {
     ctx2.clearRect(0, 0, layer2.width, layer2.height);
+    ctx3.clearRect(0, 0, layer3.width, layer3.height);
+}
+
+
+function handleImgLocation(value) {
+    // console.log(value);
+
+    ctx2.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    if (value == 'no-img') {} else if (value == 'left-top') {
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 5, 5, layer2.width, layer2.height);
+
+    } else if (value == 'left-bottom') {
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 5, 110, layer2.width, layer2.height);
+
+    } else if (value == 'right-top') {
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 215, 5, layer2.width, layer2.height);
+
+    } else if (value == 'right-bottom') {
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 215, 110, layer2.width, layer2.height);
+
+    } else if (value == 'center') {
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 115, 55, layer2.width, layer2.height);
+
+    }
 }
 
 // 마우스 우클릭 방지
@@ -328,12 +406,12 @@ function handleCM(event) {
 Array.from(colors).forEach(color =>
     color.addEventListener("click", handleColorClick)
 );
-if (layer2) {
-    layer2.addEventListener("mousemove", onMouseMove);
-    layer2.addEventListener("mousedown", startPainting);
-    layer2.addEventListener("mouseup", stopPainting);
-    layer2.addEventListener("mouseleave", stopPainting);
-    layer2.addEventListener("contextmenu", handleCM);
+if (layer3) {
+    layer3.addEventListener("mousemove", onMouseMove);
+    layer3.addEventListener("mousedown", startPainting);
+    layer3.addEventListener("mouseup", stopPainting);
+    layer3.addEventListener("mouseleave", stopPainting);
+    layer3.addEventListener("contextmenu", handleCM);
 }
 
 if (range) {
@@ -348,6 +426,7 @@ if (reset) {
 if (mode) {
     mode.addEventListener("click", handleModeClick);
 }
+imgLoc.forEach(radio => radio.addEventListener('change', () => handleImgLocation(radio.value)));
 </script>
 
 {% endblock %}
