@@ -65,11 +65,15 @@ def passOptions(request):
     ml_model.makeResult(request.GET['name'], '01')
     ml_model.makeResult(request.GET['name'], '02')
     ml_model.makeResult(request.GET['name'], '03')
+    
+    user_name = request.GET['name']
+    options = request.GET['options']
+    point = int(request.GET['pointLetter'])
 
     data = {
-        "name": request.GET['name'],
-        "options": request.GET['options'],
-        "pointLetter": request.GET['pointLetter']
+        "name": user_name,
+        "options": options,
+        "pointLetter": user_name[point]
     }
     return render(request, 'signMaker/signCreate.html', data)
 

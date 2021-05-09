@@ -25,12 +25,31 @@ def get_hangul_index(char_index):
 
 def generate(name, num):
   if name[num].encode().isalpha():
-    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/gan-eng/' + name[num] + '-generator'
-    model = tf.keras.models.load_model(model_name, compile=False)
-    new_generated_image = model(tf.random.normal([16, 100]), training=False)
-    plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
+    # GAN-ENG
+    # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/gan-eng/' + name[num] + '-generator'
+    # model = tf.keras.models.load_model(model_name, compile=False)
+    # new_generated_image = model(tf.random.normal([16, 100]), training=False)
+    # plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
+    # plt.axis('off')
+    # plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+
+    # CGAN-ENG
+    is_upper = name[num].isupper()
+    if is_upper:
+      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+    else:
+      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator'
+    sub_num = ord(name[num].lower()) - 97
+    new_model = tf.keras.models.load_model(model_name)
+    noise = np.random.normal(0, 1, (1, 100))
+    sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
+    gen_imgs = new_model.predict([noise, sampled_labels])
+    gen_imgs = 0.5 * gen_imgs + 0.5
+
+    plt.imshow(gen_imgs[0, :, :, 0], cmap='gray')
     plt.axis('off')
     plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+
   else:
     # Hangul
     f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
