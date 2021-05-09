@@ -76,3 +76,11 @@ def preserveResult(request):
         path += shutil.copy("./signMaker/static/ml_result/" + request.GET['file_name'], "./signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".jpg")
         preservedResult.objects.create(owner_email=request.session['user_email'], owner_last_name_kr=request.session['user_name'], result_path=path)
     return render(request, 'signMaker/signCreate.html')
+
+def is_storable(request):
+    rows = preservedResult.objects.filter(owner_email=request.session['user_email'])
+    path = ""
+    if len(rows) < 5 :
+        return HttpResponse('True')
+    else:
+        return HttpResponse('False')

@@ -136,7 +136,28 @@ table {
 </style>
 
 <script>
+
+    function is_storable() {
+        let returnValue = false; //이미 존재하면 false를 리턴.
+        $.ajax({
+            url: 'is_storable/',
+            type: 'GET',
+            async: false,
+            data: {},
+            success: function(data) {
+                if(data === 'True') {
+                    returnValue = true;
+                } else {
+                    returnValue = false;
+                }
+            }
+        })
+        return returnValue;
+    }
+
     function preserveResult(file_name) {
+        let storable = is_storable();
+        console.log(storable);
         $.ajax({
             url: 'preserveResultAction/',
             type: 'GET',
@@ -145,6 +166,8 @@ table {
             success: function(data) {
             }
         })
+
+    
     }
 </script>
 
