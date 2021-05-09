@@ -63,18 +63,25 @@ def passOptions(request):
     if not session_existence(request):
         return redirect('login')
     ml_model.makeResult(request.GET['name'], '01')
-    ml_model.makeResult(request.GET['name'], '02')
-    ml_model.makeResult(request.GET['name'], '03')
+    # ml_model.makeResult(request.GET['name'], '02')
+    # ml_model.makeResult(request.GET['name'], '03')
     
     user_name = request.GET['name']
     options = request.GET['options']
-    point = int(request.GET['pointLetter'])
+    if request.GET['pointLetter'] != "": 
+        point = int(request.GET['pointLetter'])
+        data = {
+            "name": user_name,
+            "options": options,
+            "pointLetter": user_name[point]
+        }
+    else:
+        data = {
+            "name": user_name,
+            "options": options,
+            "pointLetter": ""
+        }
 
-    data = {
-        "name": user_name,
-        "options": options,
-        "pointLetter": user_name[point]
-    }
     return render(request, 'signMaker/signCreate.html', data)
 
 

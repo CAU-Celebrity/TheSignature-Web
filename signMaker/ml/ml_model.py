@@ -53,14 +53,14 @@ def generate(name, num):
     
   else:
     # Hangul
-    # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
-    f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    # f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     charset = f.readlines()
     char = name[num] + "\n"
     char_index = charset.index(char)
     (gen_num, sub_num) = get_hangul_index(char_index)
-    # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
-    model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
     sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
