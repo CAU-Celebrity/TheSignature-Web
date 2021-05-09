@@ -155,9 +155,7 @@ table {
         return returnValue;
     }
 
-    function preserveResult(file_name) {
-        let storable = is_storable();
-        console.log(storable);
+    function store_action(file_name) {
         $.ajax({
             url: 'preserveResultAction/',
             type: 'GET',
@@ -166,8 +164,12 @@ table {
             success: function(data) {
             }
         })
+    }
 
-    
+    function preserveResult(file_name) {
+        let storable = is_storable();
+        console.log(storable);
+        store_action(file_name);    
     }
 </script>
 
