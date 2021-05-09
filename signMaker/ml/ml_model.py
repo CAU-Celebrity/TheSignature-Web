@@ -7,9 +7,9 @@ import cv2
 import os
 
 # 1. 이름 입력 받기
-
 # name = input()
 # name = name.replace(" ", "").lower()
+
 
 def get_hangul_index(char_index):
   start_index = [0, 171, 291, 432, 560, 646, 773, 902, 1031, 1104, 1267, 1353, 1561, 1696, 1778, 1890, 1997, 2103, 2208]
@@ -22,7 +22,6 @@ def get_hangul_index(char_index):
 
 
 # 2. 모델로 각 알파벳 생성
-
 def generate(name, num):
   if name[num].encode().isalpha():
     model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/gan-eng/' + name[num] + '-generator'
@@ -31,15 +30,19 @@ def generate(name, num):
     plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
     plt.axis('off')
     plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+
+    return 0
   else:
     # Hangul
-    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     charset = f.readlines()
     char = name[num] + "\n"
     char_index = charset.index(char)
     (gen_num, sub_num) = get_hangul_index(char_index)
-    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
-    new_model = tf.keras.models.load_model(model_name)
+    # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
     sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
     gen_imgs = new_model.predict([noise, sampled_labels])
@@ -47,15 +50,21 @@ def generate(name, num):
 
     plt.imshow(gen_imgs[0, :, :, 0], cmap='gray')
     plt.axis('off')
-    plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+    plt.imsave('./signMaker/static/ml_result/original'+str(num)+'.jpg', gen_imgs[0, :, :, 0])
+
+    return 1
 
 
+# 노이즈 제거
+def denoise(num):
+  image = cv2.imread('./signMaker/static/ml_result/original'+str(num)+'.jpg', 0)
+  converted_img = cv2.cvtColor(image, cv2.COLOR_GRAY2BGR)
+  dst = cv2.fastNlMeansDenoisingColored(converted_img,None,25,10,7,21)
+  return dst
 
 
  # 3. 알파벳 이미지 공백 없게 자르기
-
-def crop_image(num):
-  image = cv2.imread('./signMaker/static/ml_result/original'+str(num)+'.jpg', 0)
+def crop_image(image):
   blur = cv2.GaussianBlur(image, ksize=(3,3), sigmaX=0)
   ret, thresh1 = cv2.threshold(blur, 127, 255, cv2.THRESH_BINARY)
   edged = cv2.Canny(blur, 10, 250)
@@ -89,11 +98,11 @@ def crop_image(num):
 
   return img_trim
 
-# 4. 알파벳 이미지들 하나로 합쳐서 저장
 
+# 4. 알파벳 이미지들 하나로 합쳐서 저장
 merged_image = np.zeros((2, 2))
 
-def merge_image(single_image, num):
+def merge_image(single_image, num, language):
   global merged_image
 
   if num == 0:
@@ -103,23 +112,37 @@ def merge_image(single_image, num):
     width = len(merged_image[0])
     height = len(single_image)
     new_merged_image = np.full((height, width), 255)
-    new_merged_image[height-len(merged_image):,:] = merged_image
+    if language == 0:
+      new_merged_image[height-len(merged_image):,:] = merged_image
+    else:
+      start = int((height-len(merged_image))/2)
+      new_merged_image[start:start+len(merged_image),:] = merged_image
     merged_image = np.concatenate((new_merged_image, single_image), axis=1)
 
   else:
     width = len(single_image[0])
     height = len(merged_image)
     new_single_image = np.full((height, width), 255)
-    new_single_image[height-len(single_image):,:] = single_image
+    if language == 0:
+      new_single_image[height-len(single_image):,:] = single_image
+    else:
+      start = int((height-len(single_image))/2)
+      new_single_image[start:start+len(single_image),:] = single_image
     merged_image = np.concatenate((merged_image, new_single_image), axis=1)
 
-def makeResult(name, str_number):
 
+# 최종 결과물 저장
+def makeResult(name, str_number):
   for num in range(len(name)):
-    generate(name, num)
-    single_image = crop_image(num)
-    Image.fromarray(single_image).save('./signMaker/static/ml_result/crop' + str(num) + '.jpg')
-    merge_image(single_image, num)
+    language = generate(name, num)
+    cropped = crop_image(denoise(num))
+    _, single_image = cv2.threshold(cropped, 100, 255, cv2.THRESH_BINARY)
+    single_image = cv2.cvtColor(single_image, cv2.COLOR_BGR2GRAY)
+    merge_image(single_image, num, language)
 
   image = Image.fromarray(merged_image.astype('uint8'), 'L')
   image.save('./signMaker/static/ml_result/handwriting_name' + str_number + '.jpg')
+
+# makeResult('서율아', '1')
+# makeResult('안녕안녕', '2')
+# makeResult('중간발표싫어', '3')
