@@ -8,7 +8,7 @@ import os
 import json
 import sys
 sys.path.insert(
-    1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/')
+    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
 import ml_model
 
 secret_file = os.path.realpath('./secrets.json')
@@ -47,10 +47,9 @@ def mainPage(request):
 
 
 def watermarkPage(request):
-    rows = preservedResult.objects.filter(
-        owner_email=request.session['user_email']).values()
-    
     if session_existence(request):
+        rows = preservedResult.objects.filter(
+            owner_email=request.session['user_email']).values()
         if len(rows) > 0:
             return render(request, 'signMaker/watermark.html', {'path': rows[0]['result_path']})
         else:
