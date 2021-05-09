@@ -4,3 +4,4 @@
 *.pyc
 secrets.json
 venv/*
+.vscode/settings.json
