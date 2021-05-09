@@ -11,16 +11,45 @@ import os
 # name = input()
 # name = name.replace(" ", "").lower()
 
+def get_hangul_index(char_index):
+  start_index = [0, 171, 291, 432, 560, 646, 773, 902, 1031, 1104, 1267, 1353, 1561, 1696, 1778, 1890, 1997, 2103, 2208]
+  for index in range(0, len(start_index)):
+    if index < len(start_index) - 1:
+      if start_index[index] <= char_index < start_index[index+1]:
+        return (index, char_index - start_index[index])
+    else:
+      return (index, char_index - 2208)
+
 
 # 2. 모델로 각 알파벳 생성
 
 def generate(name, num):
-  model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/' + name[num] + '-generator'
-  model = tf.keras.models.load_model(model_name, compile=False)
-  new_generated_image = model(tf.random.normal([16, 100]), training=False)
-  plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
-  plt.axis('off')
-  plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+  if name[num].encode().isalpha():
+    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/gan-eng/' + name[num] + '-generator'
+    model = tf.keras.models.load_model(model_name, compile=False)
+    new_generated_image = model(tf.random.normal([16, 100]), training=False)
+    plt.imshow(new_generated_image[1, :, :, 0] * 127.5 + 127.5, cmap='gray')
+    plt.axis('off')
+    plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+  else:
+    # Hangul
+    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    charset = f.readlines()
+    char = name[num] + "\n"
+    char_index = charset.index(char)
+    (gen_num, sub_num) = get_hangul_index(char_index)
+    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    new_model = tf.keras.models.load_model(model_name)
+    noise = np.random.normal(0, 1, (1, 100))
+    sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
+    gen_imgs = new_model.predict([noise, sampled_labels])
+    gen_imgs = 0.5 * gen_imgs + 0.5
+
+    plt.imshow(gen_imgs[0, :, :, 0], cmap='gray')
+    plt.axis('off')
+    plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+
+
 
 
  # 3. 알파벳 이미지 공백 없게 자르기
@@ -89,6 +118,7 @@ def makeResult(name, str_number):
   for num in range(len(name)):
     generate(name, num)
     single_image = crop_image(num)
+    Image.fromarray(single_image).save('./signMaker/static/ml_result/crop' + str(num) + '.jpg')
     merge_image(single_image, num)
 
   image = Image.fromarray(merged_image.astype('uint8'), 'L')

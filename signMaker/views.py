@@ -6,7 +6,7 @@ from .models import preservedResult
 import os
 import json
 import sys
-sys.path.insert(1, 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml')
+sys.path.insert(1, 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
 import ml_model
 import shutil
 
