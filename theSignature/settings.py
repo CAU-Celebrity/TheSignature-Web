@@ -137,3 +137,6 @@ EMAIL_HOST_PASSWORD = get_secret("HOST_EMAIL_PASSWD")
 EMAIL_USE_TLS = True
 # TLS 보안 방법
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+MEDIA_URL = 'preservedResult/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'signMaker', 'preservedResult')

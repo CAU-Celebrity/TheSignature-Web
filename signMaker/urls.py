@@ -1,6 +1,7 @@
 from . import views
 from django.urls import path
-
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('home/',views.mainPage, name="home"),
@@ -11,4 +12,4 @@ urlpatterns = [
     path('drawing/',views.drawingPage, name="drawing"),
     path('watermark/',views.watermarkPage, name="watermark")
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
