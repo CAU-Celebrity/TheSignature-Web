@@ -8,7 +8,7 @@ import os
 import json
 import sys
 sys.path.insert(
-    1, 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
+    1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/')
 import ml_model
 
 secret_file = os.path.realpath('./secrets.json')
@@ -63,8 +63,8 @@ def passOptions(request):
     if not session_existence(request):
         return redirect('login')
     ml_model.makeResult(request.GET['name'], '01')
-    # ml_model.makeResult(request.GET['name'], '02')
-    # ml_model.makeResult(request.GET['name'], '03')
+    ml_model.makeResult(request.GET['name'], '02')
+    ml_model.makeResult(request.GET['name'], '03')
     
     user_name = request.GET['name']
     options = request.GET['options']
