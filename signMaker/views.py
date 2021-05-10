@@ -99,6 +99,8 @@ def preserveResult(request):
 
 
 def is_storable(request):
+    if not session_existence(request):
+        return redirect('login')
     rows = preservedResult.objects.filter(
         owner_email=request.session['user_email'])
     path = ""
