@@ -5,3 +5,5 @@
 secrets.json
 venv/*
 .vscode/settings.json
+./static/ml_result/*
+*.jpg

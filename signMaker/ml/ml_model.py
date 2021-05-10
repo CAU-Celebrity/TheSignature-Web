@@ -35,11 +35,13 @@ def generate(name, num):
     # CGAN-ENG
     is_upper = name[num].isupper()
     if is_upper:
-      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+      model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
     else:
-      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator'
+      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
+      model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
     sub_num = ord(name[num].lower()) - 97
-    new_model = tf.keras.models.load_model(model_name)
+    new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
     sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
     gen_imgs = new_model.predict([noise, sampled_labels])
@@ -47,20 +49,20 @@ def generate(name, num):
 
     plt.imshow(gen_imgs[0, :, :, 0], cmap='gray')
     plt.axis('off')
-    plt.savefig('./signMaker/static/ml_result/original'+str(num)+'.jpg')
+    plt.imsave('./signMaker/static/ml_result/original'+str(num)+'.jpg', gen_imgs[0, :, :, 0])
 
     return 0
     
   else:
     # Hangul
-    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
-    # f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     charset = f.readlines()
     char = name[num] + "\n"
     char_index = charset.index(char)
     (gen_num, sub_num) = get_hangul_index(char_index)
-    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
-    # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
     sampled_labels = np.arange(sub_num, sub_num + 1).reshape(-1, 1)
@@ -155,6 +157,7 @@ def makeResult(name, str_number):
   for num in range(len(name)):
     language = generate(name, num)
     cropped = crop_image(denoise(num))
+    # plt.imsave('./signMaker/static/ml_result/crop'+str(num)+'.jpg', cropped)
     _, single_image = cv2.threshold(cropped, 100, 255, cv2.THRESH_BINARY)
     single_image = cv2.cvtColor(single_image, cv2.COLOR_BGR2GRAY)
     merge_image(single_image, num, language)
@@ -165,3 +168,7 @@ def makeResult(name, str_number):
 # makeResult('서율아', '1')
 # makeResult('안녕안녕', '2')
 # makeResult('중간발표싫어', '3')
+# makeResult('cau', '1')
+# makeResult('yula', '2')
+# makeResult('Doesitwork', '3')
+# makeResult('아졸려', '4')
