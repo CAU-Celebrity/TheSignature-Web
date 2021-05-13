@@ -111,55 +111,56 @@ input[type=range]::-webkit-slider-runnable-track {
 
 <div class="pageName">
             서명 연습하기 >>
-        </div><br/><br/><br/><br/><br/><br/>
-        <div class='signPrac' style="position: relative;">
-            <div class="controls__canvas">
-                <canvas id="jsCanvas1" class="canvas" style="position: absolute; z-index: 1;"></canvas>
-                <canvas id="jsCanvas2" class="canvas" style="position: absolute; z-index: 2;"></canvas>
-                <canvas id="jsCanvas3" class="canvas" style="position: absolute; z-index: 3;"></canvas>
+</div><br/><br/><br/><br/><br/><br/>
+    <div class='signPrac' style="position: relative;">
+        <div class="controls__canvas">
+            <canvas id="jsCanvas1" class="canvas" style="position: absolute; z-index: 1;"></canvas>
+            <canvas id="jsCanvas2" class="canvas" style="position: absolute; z-index: 2;"></canvas>
+            <canvas id="jsCanvas3" class="canvas" style="position: absolute; z-index: 3;"></canvas>
+
+        </div>
+        <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+        <div class="controls">
+            <div class="controls__ranges">
+                <div class="rangeDes1 controls__range">
+                    이미지 투명도
+                </div>
+                <div class="controls__range">
+                    <input type="range" id="jsRangeTran" min="0.0" max="1.0" value="0.0" step="0.01" style="position: absolute;" />
+
+                </div>
+            </div>
+            <div class="controls__ranges">
+                <div class="rangeDes2 controls__range">
+                    펜 두께감
+                </div>
+                <div class="controls__range">
+                    <input class="controls__range" type="range" id="jsRange" min="0.1" max="7.0" value="3.0" step="0.1" style="position: absolute;" />
+
+                </div>
+            </div>
+            <br/>
+            <div class="controls__colors" id="jsColors">
+                <div class="controls__color jsColor" style="background-color: #000000"></div>
+                <div class="controls__color jsColor" style="background-color: #242424"></div>
+                <div class="controls__color jsColor" style="background-color: #444444"></div>
+                <div class="controls__color jsColor" style="background-color: #727272"></div>
+                <div class="controls__color jsColor" style="background-color: #a1a1a1"></div>
+                <div class="controls__color jsColor" style="background-color: #d4d4d4"></div>
+                <div class="controls__color jsColor" style="background-color: #ffffff"></div>
 
             </div>
-            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-            <div class="controls">
-                <div class="controls__ranges">
-                    <div class="rangeDes1 controls__range">
-                        이미지 투명도
-                    </div>
-                    <div class="controls__range">
-                        <input type="range" id="jsRangeTran" min="0.0" max="1.0" value="0.0" step="0.01" style="position: absolute;" />
 
-                    </div>
-                </div>
-                <div class="controls__ranges">
-                    <div class="rangeDes2 controls__range">
-                        펜 두께감
-                    </div>
-                    <div class="controls__range">
-                        <input class="controls__range" type="range" id="jsRange" min="0.1" max="7.0" value="3.0" step="0.1" style="position: absolute;" />
-
-                    </div>
-                </div>
-                <br/>
-                <div class="controls__colors" id="jsColors">
-                    <div class="controls__color jsColor" style="background-color: #000000"></div>
-                    <div class="controls__color jsColor" style="background-color: #242424"></div>
-                    <div class="controls__color jsColor" style="background-color: #444444"></div>
-                    <div class="controls__color jsColor" style="background-color: #727272"></div>
-                    <div class="controls__color jsColor" style="background-color: #a1a1a1"></div>
-                    <div class="controls__color jsColor" style="background-color: #d4d4d4"></div>
-                    <div class="controls__color jsColor" style="background-color: #ffffff"></div>
-
-                </div>
-
-                <div class="controls__btns">
-                    <button id="jsMode">Erase</button>
-                    <button id="jsReset">Reset</button>
-                </div>
-                <div class="controls__btns">
-                    <button id="jsSave">Save</button>
-                </div>
+            <div class="controls__btns">
+                <button id="jsMode">Erase</button>
+                <button id="jsReset">Reset</button>
+            </div>
+            <div class="controls__btns">
+                <button id="jsSave">Save</button>
             </div>
         </div>
+    </div>
+    <div class="repImageSrc" style="display: none;">{{ path }}</div>
 <script>
 const INITIAL_COLOR = "black";
 var CANVAS_WIDTH = 600;
@@ -184,8 +185,7 @@ const sign_img = document.getElementById("sign-img");
 
 var signImg = new Image();
 
-<!--signImg.src = "img/sign.png";-->
-<!-- 윗줄 src에 이미지 path 넣어주면 됨 -->
+signImg.src = document.querySelector('.repImageSrc').innerHTML;
 
 ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 

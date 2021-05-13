@@ -34,7 +34,12 @@ def session_existence(request):
 
 def drawingPage(request):
     if session_existence(request):
-        return render(request, 'signMaker/drawing.html')
+        rows = preservedResult.objects.filter(
+            owner_email=request.session['user_email']).values()
+        if len(rows) > 0:
+            return render(request, 'signMaker/drawing.html', {'path': rows[0]['result_path']})
+        else:
+            return render(request, 'signMaker/drawing.html')
     else:
         return redirect('login')
 
