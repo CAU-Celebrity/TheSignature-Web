@@ -22,7 +22,7 @@
 }
 
 .canvas {
-    left: 180px;
+    left: 330px;
     width: 600px;
     height: 400px;
     background-color: transparent;
@@ -190,8 +190,11 @@ signImg.src = document.querySelector('.repImageSrc').innerHTML;
 ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
 signImg.onload = function() {
-
-    ctx1.drawImage(signImg, 0, 0, signImg.width, signImg.height, 0, 0, layer1.width, layer1.height);
+    var scale = Math.min(signImg.width / layer1.width, signImg.height / layer1.height);
+    var newX = (layer1.width - layer1.width * scale) / 2
+    var newY = (layer1.height - layer1.height * scale) / 2
+    ctx1.drawImage(signImg, newX, newY, layer1.width * scale, layer1.height * scale);
+<!--    ctx1.drawImage(signImg, 0, 0, signImg.width, signImg.height, 0, 0, layer1.width, layer1.height);-->
 
 }
 ctx2.fillStyle = "rgba(255,255,255,0.0)";
