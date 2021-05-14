@@ -12,4 +12,4 @@ urlpatterns = [
     path('drawing/',views.drawingPage, name="drawing"),
     path('watermark/',views.watermarkPage, name="watermark")
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL2, document_root=settings.MEDIA_ROOT2)

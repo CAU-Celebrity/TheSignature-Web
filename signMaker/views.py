@@ -7,6 +7,9 @@ from .models import preservedResult
 import os
 import json
 import sys
+
+# sys.path.insert(
+#     1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml')
 sys.path.insert(
     1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
 import ml_model
@@ -37,7 +40,7 @@ def drawingPage(request):
         rows = preservedResult.objects.filter(
             owner_email=request.session['user_email']).values()
         if len(rows) > 0:
-            return render(request, 'signMaker/drawing.html', {'path': rows[0]['result_path']})
+            return render(request, 'signMaker/drawing.html', {'alpha_path': rows[0]['alpha_path']})
         else:
             return render(request, 'signMaker/drawing.html')
     else:
@@ -56,7 +59,7 @@ def watermarkPage(request):
         rows = preservedResult.objects.filter(
             owner_email=request.session['user_email']).values()
         if len(rows) > 0:
-            return render(request, 'signMaker/watermark.html', {'path': rows[0]['result_path']})
+            return render(request, 'signMaker/watermark.html', {'alpha_path': rows[0]['alpha_path']})
         else:
             return render(request, 'signMaker/watermark.html')
     else:
@@ -97,9 +100,12 @@ def preserveResult(request):
     path = ""
     if len(rows) < 5:
         path += shutil.copy("./signMaker/static/ml_result/" +
-                            request.GET['file_name'], "./signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".jpg")
+                            request.GET['file_name'], "./signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".png")
+        path += shutil.copy("./signMaker/static/alpha_result/" +
+                            request.GET['file_name'], "./signMaker/alphaPreservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".png")        
         preservedResult.objects.create(owner_email=request.session['user_email'], owner_last_name_kr=request.session['user_name'],
-                                       result_path="../../signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".jpg")
+                                       result_path="../../signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".png",
+                                       alpha_path="../../signMaker/alphaPreservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".png")
     return render(request, 'signMaker/signCreate.html')
 
 

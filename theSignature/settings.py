@@ -140,3 +140,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 MEDIA_URL = 'preservedResult/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'signMaker', 'preservedResult')
+
+MEDIA_URL2 = 'alphaPreservedResult/'
+MEDIA_ROOT2 = os.path.join(BASE_DIR, 'signMaker', 'alphaPreservedResult')

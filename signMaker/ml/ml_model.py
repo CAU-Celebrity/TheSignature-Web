@@ -5,7 +5,11 @@ from PIL import Image
 import numpy as np
 import cv2
 import os
-
+import sys
+sys.path.insert(
+    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
+import applyAlpha
+import addLogo
 # 1. 이름 입력 받기
 # name = input()
 # name = name.replace(" ", "").lower()
@@ -37,9 +41,13 @@ def generate(name, num):
     if is_upper:
       model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-upper-generator'
+
     else:
       model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
+      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-lower-generator2'
+
     sub_num = ord(name[num].lower()) - 97
     new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
@@ -55,13 +63,15 @@ def generate(name, num):
     
   else:
     # Hangul
-    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     # f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+
     charset = f.readlines()
     char = name[num] + "\n"
     char_index = charset.index(char)
     (gen_num, sub_num) = get_hangul_index(char_index)
-    model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
@@ -164,17 +174,9 @@ def makeResult(name, str_number):
 
   image = Image.fromarray(merged_image.astype('uint8'), 'L')
   image.save('./signMaker/static/ml_result/handwriting_name' + str_number + '.png')
-  applyTransparent()
+  applyAlpha.applyAlphaValue('./signMaker/static/ml_result/handwriting_name' + str_number + '.png', str_number)
+  addLogo.putLogo('./signMaker/static/ml_result/handwriting_name' + str_number + '.png', str_number)
 
-def applyTransparent():
-  for writing_num in range(1, 4):
-    image = cv2.imread('./signMaker/static/ml_result/handwriting_name0' + str(writing_num) + '.png', cv2.IMREAD_UNCHANGED)
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
-    alpha_channel = image[:, :, 3]
-    _, mask = cv2.threshold(alpha_channel, 254, 255, cv2.THRESH_BINARY)
-    new_img = image[:, :, :3]
-    cv2.imwrite('./signMaker/static/ml_result/handwriting_name0' + str(writing_num) + '.png', new_img)
-    
 
 
 # makeResult('서율아', '1')

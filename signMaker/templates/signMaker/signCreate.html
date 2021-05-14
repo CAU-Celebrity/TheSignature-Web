@@ -145,7 +145,7 @@ table {
             async: false,
             data: {},
             success: function(data) {
-                if(data === 'False') {
+                if(data === 'True') {
                     returnValue = true;
                 } else {
                     returnValue = false;
@@ -172,7 +172,7 @@ table {
         var btn2 = document.getElementById('downloadImg2');
         var btn3 = document.getElementById('downloadImg3');
 
-        if(is_storable()){
+        if(is_storable() == false){
 
             btn1.setAttribute('href', '');
             btn2.setAttribute('href', '');
@@ -239,24 +239,42 @@ table {
         <br/><br/><br/><br/>
         <div class="signatures">
             <div class="sign">
-                <img src="{% static 'ml_result/handwriting_name01.png' %}" alt="handwriting_name01.png" loading="lazy" width="300px" style="height: 150px;">
-                <a id='downloadImg1' href="{% static 'ml_result/handwriting_name01.png' %}" download="signature" onclick="disableDownload()">
+                <img src="{% static 'logo_result/handwriting_name01.png' %}" alt="handwriting_name01.png" loading="lazy" width="300px" style="height: 150px;">
+                <a id='downloadImg1' href="{% static 'alpha_result/handwriting_name01.png' %}" download="signature" onclick="disableDownload()">
                     <div class="btn downloadBtn" onclick="preserveResult('handwriting_name01.png')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
-                <!-- <button type="submit" onclick="window.open('img/sign.png')">Download!</button> -->
             </div>
             <div class="sign">
-                <img src="{% static 'ml_result/handwriting_name02.png' %}" alt="handwriting_name02.png" loading="lazy" width="300px" style="height: 150px;">
-                <a id='downloadImg2' href="{% static 'ml_result/handwriting_name02.png' %}" download="signature" onclick="disableDownload()">
+                <img src="{% static 'logo_result/handwriting_name02.png' %}" alt="handwriting_name02.png" loading="lazy" width="300px" style="height: 150px;">
+                <a id='downloadImg2' href="{% static 'alpha_result/handwriting_name02.png' %}" download="signature" onclick="disableDownload()">
                     <div class="btn downloadBtn" onclick="preserveResult('handwriting_name02.png')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
             </div>
             <div class="sign">
-                <img src="{% static 'ml_result/handwriting_name03.png' %}" alt="handwriting_name03.png" loading="lazy" width="300px" style="height: 150px;">
-                <a id='downloadImg3' href="{% static 'ml_result/handwriting_name03.png' %}" download="signature" onclick="disableDownload()">
+                <img src="{% static 'logo_result/handwriting_name03.png' %}" alt="handwriting_name03.png" loading="lazy" width="300px" style="height: 150px;">
+                <a id='downloadImg3' href="{% static 'alpha_result/handwriting_name03.png' %}" download="signature" onclick="disableDownload()">
                     <div class="btn downloadBtn" onclick="preserveResult('handwriting_name03.png')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>
                 </a>
             </div>
+<!--            <div class="sign">-->
+<!--                <img src="{% static 'ml_result/handwriting_name01.jpg' %}" alt="handwriting_name01.jpg" loading="lazy" width="300px" style="height: 150px;">-->
+<!--                <a id='downloadImg1' href="{% static 'ml_result/handwriting_name01.jpg' %}" download="signature" onclick="disableDownload()">-->
+<!--                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name01.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>-->
+<!--                </a>-->
+<!--                &lt;!&ndash; <button type="submit" onclick="window.open('img/sign.png')">Download!</button> &ndash;&gt;-->
+<!--            </div>-->
+<!--            <div class="sign">-->
+<!--                <img src="{% static 'ml_result/handwriting_name02.jpg' %}" alt="handwriting_name02.jpg" loading="lazy" width="300px" style="height: 150px;">-->
+<!--                <a id='downloadImg2' href="{% static 'ml_result/handwriting_name02.jpg' %}" download="signature" onclick="disableDownload()">-->
+<!--                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name02.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>-->
+<!--                </a>-->
+<!--            </div>-->
+<!--            <div class="sign">-->
+<!--                <img src="{% static 'ml_result/handwriting_name03.jpg' %}" alt="handwriting_name03.jpg" loading="lazy" width="300px" style="height: 150px;">-->
+<!--                <a id='downloadImg3' href="{% static 'ml_result/handwriting_name03.jpg' %}" download="signature" onclick="disableDownload()">-->
+<!--                    <div class="btn downloadBtn" onclick="preserveResult('handwriting_name03.jpg')" style="background-color: #a39a86; color: rgb(243, 236, 231); width:90px;">다운로드</div>-->
+<!--                </a>-->
+<!--            </div>-->
         </div>
 
 
