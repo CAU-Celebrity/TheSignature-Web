@@ -163,7 +163,19 @@ def makeResult(name, str_number):
     merge_image(single_image, num, language)
 
   image = Image.fromarray(merged_image.astype('uint8'), 'L')
-  image.save('./signMaker/static/ml_result/handwriting_name' + str_number + '.jpg')
+  image.save('./signMaker/static/ml_result/handwriting_name' + str_number + '.png')
+  applyTransparent()
+
+def applyTransparent():
+  for writing_num in range(1, 4):
+    image = cv2.imread('./signMaker/static/ml_result/handwriting_name0' + str(writing_num) + '.png', cv2.IMREAD_UNCHANGED)
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2BGRA)
+    alpha_channel = image[:, :, 3]
+    _, mask = cv2.threshold(alpha_channel, 254, 255, cv2.THRESH_BINARY)
+    new_img = image[:, :, :3]
+    cv2.imwrite('./signMaker/static/ml_result/handwriting_name0' + str(writing_num) + '.png', new_img)
+    
+
 
 # makeResult('서율아', '1')
 # makeResult('안녕안녕', '2')
