@@ -6,4 +6,6 @@ secrets.json
 venv/*
 .vscode/settings.json
 ./static/ml_result/*
+./static/logo_result/*
+./static/alpha_result/*
 *.jpg
