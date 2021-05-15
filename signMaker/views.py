@@ -66,6 +66,13 @@ def watermarkPage(request):
         return redirect('login')
 
 
+def watermarkUpload(request):
+    if session_existence(request):
+        pass
+    else:
+        return redirect('login')
+
+
 def passOptions(request):
     if not session_existence(request):
         return redirect('login')
@@ -98,6 +105,14 @@ def preserveResult(request):
     rows = preservedResult.objects.filter(
         owner_email=request.session['user_email'])
     path = ""
+
+    preservedDir = './signMaker/preservedResult/'
+    if os.path.isdir(preservedDir)==False:
+        os.mkdir(preservedDir)
+    alphaPreservedDir = './signMaker/alphaPreservedResult/'
+    if os.path.isdir(alphaPreservedDir)==False:
+        os.mkdir(alphaPreservedDir)
+
     if len(rows) < 5:
         path += shutil.copy("./signMaker/static/ml_result/" +
                             request.GET['file_name'], "./signMaker/preservedResult/" + request.session['user_email'] + str(len(rows) + 1) + ".png")

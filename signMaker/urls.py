@@ -10,6 +10,6 @@ urlpatterns = [
     path('home/passOptions/is_storable/',views.is_storable, name="is_storable"),
     # path('home/signCreate/', views.signCreate, name="signCreate"),
     path('drawing/',views.drawingPage, name="drawing"),
-    path('watermark/',views.watermarkPage, name="watermark")
-
+    path('watermark/',views.watermarkPage, name="watermark"),
+    path('watermark/uploadAction',views.watermarkUpload, name="watermark_upload"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) + static(settings.MEDIA_URL2, document_root=settings.MEDIA_ROOT2)
