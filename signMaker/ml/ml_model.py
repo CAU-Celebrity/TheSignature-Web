@@ -6,10 +6,13 @@ import numpy as np
 import cv2
 import os
 import sys
+# sys.path.insert(
+#     1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
 sys.path.insert(
-    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
+    1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/')
 import applyAlpha
 import addLogo
+
 # 1. 이름 입력 받기
 # name = input()
 # name = name.replace(" ", "").lower()
@@ -39,14 +42,14 @@ def generate(name, num):
     # CGAN-ENG
     is_upper = name[num].isupper()
     if is_upper:
-      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
-      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-upper-generator'
+      model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-upper-generator'
 
     else:
-      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
+      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
-      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-lower-generator2'
+      model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-lower-generator2'
 
     sub_num = ord(name[num].lower()) - 97
     new_model = tf.keras.models.load_model(model_name, compile=False)
@@ -65,7 +68,7 @@ def generate(name, num):
     # Hangul
     # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     # f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
-    f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
 
     charset = f.readlines()
     char = name[num] + "\n"

@@ -8,4 +8,6 @@ venv/*
 ./static/ml_result/*
 ./static/logo_result/*
 ./static/alpha_result/*
+preservedResult/*
+alphaPreservedResult/*
 *.jpg

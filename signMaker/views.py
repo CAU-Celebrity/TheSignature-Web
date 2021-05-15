@@ -8,10 +8,10 @@ import os
 import json
 import sys
 
-# sys.path.insert(
-#     1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml')
 sys.path.insert(
-    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
+    1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml')
+# sys.path.insert(
+#     1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/')
 import ml_model
 
 secret_file = os.path.realpath('./secrets.json')
