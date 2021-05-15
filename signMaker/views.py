@@ -4,9 +4,14 @@ from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.core.exceptions import ImproperlyConfigured
 from .models import preservedResult
+from .models import preservedWatermark
+from PIL import Image
 import os
 import json
 import sys
+import re
+import io
+import base64
 
 # sys.path.insert(
 #     1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml')
@@ -54,6 +59,15 @@ def mainPage(request):
         return redirect('login')
 
 
+def getNumberOfWatermark(request):
+    if session_existence(request):
+        rows = preservedWatermark.objects.filter(
+            owner_email=request.session['user_email']).values()
+        return len(rows)
+    else:
+        return redirect('login')
+
+
 def watermarkPage(request):
     if session_existence(request):
         rows = preservedResult.objects.filter(
@@ -68,7 +82,26 @@ def watermarkPage(request):
 
 def watermarkUpload(request):
     if session_existence(request):
-        pass
+        if request.method == 'POST':
+            if request.POST.get('savedImg'):
+                preservedDir = './signMaker/preservedWatermark/'
+                if os.path.isdir(preservedDir)==False:
+                    os.mkdir(preservedDir)
+                image_path = 'signMaker/preservedWatermark/' + request.session['user_email'] + str(getNumberOfWatermark(request)+1) + '.png'
+                savedImg = request.POST.get('savedImg', '')
+                imgstr = re.search(r'base64,(.*)', savedImg).group(1)
+                output = open(image_path, 'wb')
+                output.write(base64.b64decode(imgstr))
+                output.close()
+                
+                form = preservedWatermark()
+                form.owner_email = request.session["user_email"]
+                form.owner_last_name_kr = request.session["user_name"]
+                form.result_path = image_path
+                form.save()
+            return redirect('watermark')
+        else:
+            return render(request, 'signMaker/watermark.html')
     else:
         return redirect('login')
 

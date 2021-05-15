@@ -166,9 +166,9 @@ input[type=range]::-webkit-slider-runnable-track {
 <div class="pageName">
             워터마크 적용하기 >>
         </div><br/><br/><br/><br/><br/><br/>
-<form method="POST" action="">
-        {% csrf_token %}
         <div class='watermark' style="position: relative;">
+        <form method="post" action="./uploadAction/" >
+            {% csrf_token %}
             <p><input type="file" accept="image/*" name="image" id="file" onchange="loadImage(event)" style="display: none;"></p>
             <p><label for="file" class='imgUpload' style="cursor: pointer; position: absolute;">이미지 업로드</label></p>
             <br/><br/>
@@ -224,13 +224,13 @@ input[type=range]::-webkit-slider-runnable-track {
                         <label for="center">Center</label>
                     </div>
                 </div>
+                <input type="hidden" name="savedImg" id="savedImg">
                 <div class="controls__btns">
-                    <button type="submit" id="jsSave">Save</button>
+                    <button id="jsSave" type="submit" onclick="watermarkSave()">Save</button>
                 </div>
             </div>
+        </form>
         </div>
-    <input type="hidden" name="savedImg" id="savedImg">
-    </form>
 <script>
 const INITIAL_COLOR = "black";
 var CANVAS_WIDTH = 600;
@@ -434,6 +434,7 @@ if (mode) {
     mode.addEventListener("click", handleModeClick);
 }
 imgLoc.forEach(radio => radio.addEventListener('change', () => handleImgLocation(radio.value)));
+
 </script>
 
 {% endblock %}
