@@ -27,10 +27,11 @@
 }
 
 label {
-    margin: 3px;
-    margin-top: 7px;
-    font-size: 13px;
+    margin: 10px;
+    margin-top: 20px;
+    font-size: 15px;
     font-weight: bold;
+    background-color: #f1efef;
 }
 
 .saved-signs,
@@ -48,9 +49,11 @@ label {
     box-sizing: border-box;
     border-radius: 20px;
     width: 350px;
-    height: 250px;
+<!--    height: 250px;-->
     margin: 10px;
     box-shadow: 5px 2px 10px rgb(216, 216, 216);
+    padding-top:10px;
+    padding-bottom:3px;
 }
 
 .signImg2,
@@ -127,7 +130,52 @@ a {
 }
 
 </style>
+<script>
+function dataURLtoBlob(dataurl) {
+  var arr = dataurl.split(','),
+    mime = arr[0].match(/:(.*?);/)[1],
+    bstr = atob(arr[1]),
+    n = bstr.length,
+    u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], {
+    type: mime
+  });
+}
 
+function downloadImg(imgSrc,filename) {
+  var image = new Image();
+  image.crossOrigin = "anonymous";
+  image.src = imgSrc;
+  var fileName = filename;
+  image.onload = function() {
+    var canvas = document.createElement('canvas');
+    canvas.width = this.width;
+    canvas.height = this.height;
+    canvas.getContext('2d').drawImage(this, 0, 0);
+    if (typeof window.navigator.msSaveBlob !== 'undefined') {
+      window.navigator.msSaveBlob(dataURLtoBlob(canvas.toDataURL()), fileName);
+    } else {
+      var link = document.createElement('a');
+      link.href = canvas.toDataURL();
+      link.download = fileName;
+      link.click();
+    }
+  };
+}
+
+function deleteFile(imgSrc){
+
+}
+
+function makeRepresent(imgSrc){
+
+}
+
+
+</script>
 <div class="pageName">
             저장된 서명 확인하기 >>
         </div><br/><br/><br/><br/><br/><br/>
@@ -139,9 +187,10 @@ a {
                     <div class="signImg1">
                         <label for="representative">대표 서명</label><br>
                         <img src="{{ rep_sign }}" style="margin-top:5px; margin-bottom:8px;" name="representative" alt="" loading="lazy" width="300px">
-                        <a href='' download="signature">
-                            <div class="saveBtn" style="margin-left: 135px; font-size: 14px;">저장</div>
-                        </a>
+                        <div class="saveBtn" style="margin-left: 135px; font-size: 14px;" onclick="downloadImg('{{ rep_sign }}','sign')">저장</div>
+<!--                        <a href='{{ rep_sign }}' download="signature">-->
+<!--                            <div class="saveBtn" style="margin-left: 135px; font-size: 14px;">저장</div>-->
+<!--                        </a>-->
                     </div>
                 </div>
                 <br>
@@ -151,11 +200,13 @@ a {
                     <div class="signImg2">
                         <img class="img2" src="{{ sign }}" style="margin-bottom:8px" alt="" loading="lazy" width="250px">
                         <div class="btns1">
-                            <div class="saveBtn signBtn">대표 설정</div>
-                            <a class="signBtn" href='' download="signature">
-                                <div class="saveBtn signBtn">저장</div>
-                            </a>
-                            <div class="saveBtn signBtn">삭제</div>
+                            <div class="saveBtn signBtn" onclick="makeRepresent('{{ sign }}')">대표 설정</div>
+                            <div class="saveBtn signBtn" onclick="downloadImg('{{ sign }}','sign')">저장</div>
+
+<!--                            <a class="signBtn" href='{{ sign }}' download="signature">-->
+<!--                                <div class="saveBtn signBtn">저장</div>-->
+<!--                            </a>-->
+                            <div class="saveBtn signBtn" onclick="deleteFile('{{ sign }}')">삭제</div>
                         </div>
                     </div>
                     {% endfor %}
@@ -203,9 +254,11 @@ a {
                 <div class="myImg" style="width:280px;">
                     <img class="img2" src="{{img.img}}" style="margin-bottom:8px" alt="" loading="lazy" width="230px">
                     <div class="btns2">
-                        <a href='' download="signature">
-                            <div class="saveBtn">저장</div>
-                        </a>
+<!--                        <a href='' download="signature">-->
+<!--                            <div class="saveBtn">저장</div>-->
+<!--                        </a>-->
+                        <div class="saveBtn signBtn"  onclick="downloadImg('{{ sign }}','my image')">저장</div>
+
                         <div class="saveBtn signBtn">삭제</div>
                     </div>
                 </div>
