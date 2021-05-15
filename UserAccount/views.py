@@ -13,6 +13,12 @@ from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from .text import message
 
+import sys
+sys.path.insert(
+    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
+from signMaker.models import preservedResult
+
+
 class Activate(View):
     def get(self, request, uidb64, token):
         try:
@@ -85,7 +91,17 @@ def modify_data(request):
 def saved_signs(request):
     if session_existence(request) == False:
         return redirect("login")
-    return render(request, "UserAccount/savedSignatures.html")
+    else:
+        data = {'rep_sign': '', 'preserved_sign':[]}
+        rows = preservedResult.objects.filter(
+            owner_email=request.session['user_email']).values()
+        if len(rows) > 0:
+            for index in range(len(rows)):
+                if index == 0:
+                    data['rep_sign'] = rows[index]['result_path']
+                else:
+                    data['preserved_sign'].append(rows[index]['result_path'])
+        return render(request, "UserAccount/savedSignatures.html", data)
 
 def email_check(request):
     request_email = request.GET['request_email']
