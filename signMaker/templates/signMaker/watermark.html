@@ -255,6 +255,10 @@ const sign_img = document.getElementById("sign-img");
 var bgImg = new Image();
 var signImg = new Image();
 
+var xPoint = 0;
+var yPoint = 0;
+var imgHeight = CANVAS_HEIGHT;
+var imgWidth = CANVAS_WIDTH;
 
 ctx1.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 signImg.src = sign_img.src;
@@ -274,8 +278,6 @@ var loadImage = function(event) {
     bgImg.crossOrigin = "Anonymous";
 
     bgImg.onload = function() {
-        var scale = Math.max(layer1.width / bgImg.width, layer1.height / bgImg.height);
-
         ctx1.fillStyle = "white";
         ctx2.fillStyle = "rgba(0,0,0,0)";
 
@@ -286,6 +288,13 @@ var loadImage = function(event) {
         // get the top left position of the image
         var x = (layer1.width / 2) - (bgImg.width / 2) * scale;
         var y = (layer1.height / 2) - (bgImg.height / 2) * scale;
+
+        xPoint = x;
+        yPoint = y;
+        imgWidth = bgImg.width * scale;
+        imgHeight = bgImg.height * scale;
+
+
         ctx1.drawImage(bgImg, x, y, bgImg.width * scale, bgImg.height * scale);
 
     }
@@ -389,20 +398,15 @@ function handleImgLocation(value) {
 
     ctx2.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
     if (value == 'no-img') {} else if (value == 'left-top') {
-        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 5, 5, layer2.width, layer2.height);
-
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 8, signImg.height * 8, xPoint + 5, yPoint + 5, layer2.width, layer2.height);
     } else if (value == 'left-bottom') {
-        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 5, 110, layer2.width, layer2.height);
-
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 8, signImg.height * 8, xPoint + 5, imgHeight - 60, layer2.width, layer2.height);
     } else if (value == 'right-top') {
-        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 215, 5, layer2.width, layer2.height);
-
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 8, signImg.height * 8, xPoint + imgWidth - 90, yPoint + 5, layer2.width, layer2.height);
     } else if (value == 'right-bottom') {
-        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 215, 110, layer2.width, layer2.height);
-
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 8, signImg.height * 8, xPoint + imgWidth - 90, imgHeight - 60, layer2.width, layer2.height);
     } else if (value == 'center') {
-        ctx2.drawImage(signImg, 0, 0, signImg.width * 4, signImg.height * 4, 115, 55, layer2.width, layer2.height);
-
+        ctx2.drawImage(signImg, 0, 0, signImg.width * 8, signImg.height * 8, xPoint + (imgWidth / 2) - 50, yPoint + (imgHeight / 2) - 30, layer2.width, layer2.height);
     }
 }
 
