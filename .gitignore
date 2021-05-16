@@ -11,3 +11,4 @@ venv/*
 preservedResult/*
 alphaPreservedResult/*
 *.jpg
+*.png
