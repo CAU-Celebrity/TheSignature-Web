@@ -1,13 +1,14 @@
 import cv2, numpy as np
 import matplotlib.pylab as plt
 
-img1 = cv2.imread('C:/Users/1102k/Desktop/handwriting_name01.jpg')
-img2 = cv2.imread('C:/Users/1102k/Desktop/handwriting_name02.jpg')
-img3 = cv2.imread('C:/Users/1102k/Desktop/handwriting_name03.jpg')
+img1 = cv2.imread('C:/Users/1102k/Desktop/handwriting_name01.png')
+img2 = cv2.imread('C:/Users/1102k/Desktop/handwriting_name01.png')
+img3 = cv2.imread('C:/Users/1102k/Desktop/target.png')
+img4 = cv2.imread('C:/Users/1102k/Desktop/sample.jpg')
 # img4 = cv2.imread('../img/dr_ochanomizu.jpg')
 
 cv2.imshow('query', img1)
-imgs = [img1, img2, img3]
+imgs = [img1, img2, img3, img4]
 hists = []
 for i, img in enumerate(imgs) :
     plt.subplot(1,len(imgs),i+1)
