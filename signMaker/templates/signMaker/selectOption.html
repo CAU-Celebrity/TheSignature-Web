@@ -28,7 +28,8 @@
 .makeSignField,
 .desc,
 #styleSelect,
-#showLetter {
+#showLetter,
+.radiotype, #colorSelect,label {
     background-color: #f1efef;
 }
 
@@ -51,6 +52,9 @@
 input[type="text"] {
     border: none;
   border-radius: 5px;
+}
+input[type="color"] {
+margin: .4rem;
 }
 
 
@@ -320,7 +324,8 @@ function nameCheck() {
     var nameArr = [];
 
     for (i = 0; i < name.length; i++) {
-        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)) {
+<!--    || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)-->
+        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) ) {
             nameArr[nameLength] = name[i];
             nameLength++;
         }
@@ -331,20 +336,26 @@ function nameCheck() {
     } else {
         var stylefield = document.getElementById('styleSelect');
         var letterfield = document.getElementById('letterSelect');
+        var colorfield = document.getElementById('colorSelect');
+
         var line1 = document.getElementById('line1');
         var line2 = document.getElementById('line2');
+        var line3 = document.getElementById('line3');
 
         $("#nameinputbtn").attr("disabled", "disabled");
         $("#nameinputbtn").css("backgroundColor", "#868383");
         stylefield.style.display = 'inline';
         letterfield.style.display = 'inline';
+        colorfield.style.display = 'inline';
+
         line1.style.display = 'inline';
         line2.style.display = 'inline';
+        line3.style.display = 'inline';
 
-        for (i = 0; i < nameLength; i++) {
-            var letter = "<input type=" + "checkbox " + "name=" + "chk-letter " + "value=" + String(i) + "></input> " + nameArr[i] + "</br>"
-            $(letter).appendTo('#showLetter');
-        }
+<!--        for (i = 0; i < nameLength; i++) {-->
+<!--            var letter = "<input type=" + "checkbox " + "name=" + "chk-letter " + "value=" + String(i) + "></input> " + nameArr[i] + "</br>"-->
+<!--            $(letter).appendTo('#showLetter');-->
+<!--        }-->
 
         document.getElementById('makeSignbtn').style.setProperty('display', 'inline');
 
@@ -358,9 +369,9 @@ function delList() {
     var letterfield = document.getElementById('letterSelect');
     if (letterfield.style.display == 'inline') {
         // console.log('already open');
-        $('#showLetter').remove();
+<!--        $('#showLetter').remove();-->
         // var newList = "<div id=" + "showLetter" + "> </div>";
-        $("<div id=" + "showLetter" + "> </div>").appendTo("#letterSelect");
+<!--        $("<div id=" + "showLetter" + "> </div>").appendTo("#letterSelect");-->
         $("#nameinputbtn").removeAttr("disabled");
         $("#nameinputbtn").css("backgroundColor", "#a39a86");
 
@@ -369,6 +380,8 @@ function delList() {
         document.getElementById('line2').style.setProperty('display', 'none');
 
         document.getElementById('letterSelect').style.setProperty('display', 'none');
+        document.getElementById('colorSelect').style.setProperty('display', 'none');
+
         document.getElementById('makeSignbtn').style.setProperty('display', 'none');
 
         if ($('input[name="chk-style"]').is(":checked")) {
@@ -411,25 +424,47 @@ function makeSign() {
         i++;
     });
 
+    const isCapitalRadio = document.getElementsByName('chk-capital');
+    var isCapital = ''
+    isCapitalRadio.forEach((node) => {
+        if(node.checked)  {
+        isCapital = node.value;
+        }
+      })
 
-    const letter = 'input[name="chk-letter"]:checked';
-    const selectedLetter = document.querySelectorAll(letter);
 
-    let letters = [];
-    var j = 0;
-    selectedLetter.forEach((el) => {
-        letters[j] = el.value;
-        j++;
-    });
+<!--    const letter = 'input[name="chk-letter"]:checked';-->
+<!--    const selectedLetter = document.querySelectorAll(letter);-->
+
+<!--    let letters = [];-->
+<!--    var j = 0;-->
+<!--    selectedLetter.forEach((el) => {-->
+<!--        letters[j] = el.value;-->
+<!--        j++;-->
+<!--    });-->
 
     var nameArr = getName();
     var name = "";
     for(var i=0; i<nameArr.length; i++) {
+        if (i == 0 && isCapital == 'captitalOn')
+        {
+            name += nameArr[i].toUpperCase();
+        }
+        else
+        {
         name += nameArr[i];
+        }
     }
+
+
+    var signColor = document.getElementById("signColor").value;
+
+
     console.log(name);
     console.log(styles);
-    console.log(letters);
+    console.log(isCapital);
+    console.log(signColor);
+<!--    console.log(letters);-->
     var makeSign = document.getElementsByClassName('makeSign');
     for (var i = 0; i < makeSign.length; i += 1) {
         // elems[i].style.display = 'block';
@@ -443,7 +478,9 @@ function makeSign() {
     param = {
         "name": name,
         "options": styles,
-        "pointLetter": letters
+        "color": signColor
+<!--        "pointLetter": letters-->
+<!--        "capitalLetter" : isCapital-->
     }
     sendFormReq(path, param, "get");
 }
@@ -454,8 +491,9 @@ function getName() {
     var nameArr = [];
 
     for (i = 0; i < name.length; i++) {
-        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)) {
-            nameArr[nameLength] = name[i];
+<!--    || (name.charCodeAt(i) >= 44032 && name.charCodeAt(i) <= 55203)-->
+        if ((name.charCodeAt(i) >= 65 && name.charCodeAt(i) <= 90) || (name.charCodeAt(i) >= 97 && name.charCodeAt(i) <= 122) ) {
+            nameArr[nameLength] = name[i].toLowerCase();
             nameLength++;
         }
     }
@@ -475,7 +513,7 @@ function getName() {
 
             <div class="nameEnter makeSignField">
                 <div class="desc">
-                    서명 제작을 원하는 글자를 입력해주세요.
+                    서명 제작을 원하는 글자(영문)를 입력해주세요.
                 </div><br/>
                 <input type="text" id="name-input" onkeydown="delList()">
             </div>
@@ -493,21 +531,28 @@ function getName() {
                     원하는 스타일을 선택해주세요.
                 </div><br/>
                 <div class="desc2">
-                    A에서 선택한 스타일을 바탕으로, B와 C의 선택이 누적됩니다.<br> A에서 둘 다 선택할 경우, 둘 중 하나가 반영된 서명이 제작됩니다.<br>
+<!--                    A에서 선택한 스타일을 바탕으로, B와 C의 선택이 누적됩니다.<br> A에서 둘 다 선택할 경우, 둘 중 하나가 반영된 서명이 제작됩니다.<br>-->
+                    Long은 길쭉하게, Flat은 납작한 형태로 제작됩니다.
                     <br>
 <!--                    <div class='example'>-->
 <!--                        예 1) Roundy & Long & Legible & Illegible => Roundy & Long & Legible & Illegible<br> 예 2) Roundy & Pointy & Long => Roundy & Long || Pointy & Long<br>-->
 <!--                    </div>-->
-                </div><br/> A.
-                <input type="checkbox" name="chk-style" value='round'> Roundy
-                <!-- <font size=3 title='둥글둥글해요'>둥근둥근</font> -->
-                <input type="checkbox" name="chk-style" value='pointy'> Pointy
-                <br/> B.
+                </div>
+                <br/>
                 <input type="checkbox" name="chk-style" value='long'> Long
+                <br/>
                 <input type="checkbox" name="chk-style" value='flat'> Flat
-                <br/> C.
-                <input type="checkbox" name="chk-style" value='legible'> Legible
-                <input type="checkbox" name="chk-style" value='illegible'> Illegible
+                <br/>
+<!--                <br/> A.-->
+<!--                <input type="checkbox" name="chk-style" value='round'> Roundy-->
+<!--                &lt;!&ndash; <font size=3 title='둥글둥글해요'>둥근둥근</font> &ndash;&gt;-->
+<!--                <input type="checkbox" name="chk-style" value='pointy'> Pointy-->
+<!--                <br/> B.-->
+<!--                <input type="checkbox" name="chk-style" value='long'> Long-->
+<!--                <input type="checkbox" name="chk-style" value='flat'> Flat-->
+<!--                <br/> C.-->
+<!--                <input type="checkbox" name="chk-style" value='legible'> Legible-->
+<!--                <input type="checkbox" name="chk-style" value='illegible'> Illegible-->
             </div>
 
             <div class="split" id='line2' style="display: none">
@@ -517,11 +562,32 @@ function getName() {
             <br/>
             <div id="letterSelect" style="display: none">
                 <div class="desc">
-                    강조를 원하는 글자를 선택해주세요.
+                    첫 번째 글자 강조 (대문자 표기) 여부를 선택해주세요.
                 </div><br/>
-                <div id='showLetter'>
-                </div>
+<!--                <div id='showLetter'>-->
+<!--                </div>-->
+<!--                <br/>-->
+                <div class="radiotype">
+                <input type="radio" name="chk-capital" value='captitalOn' checked> Yes
+                <br/>
+                <input type="radio" name="chk-capital" value='captitalOff'> No
+                <br/>
+                    </div>
             </div>
+            <div class="split" id='line3' style="display: none">
+                <br/><br/>
+                <hr>
+            </div>
+            <br/>
+            <div id="colorSelect" style="display: none">
+                <div class="desc">
+                    서명 색상을 선택해주세요.
+                </div><br/>
+                <input type="color" id="signColor" name="signColor" value="#000000">
+<!--                    <label for="signColor">서명 색상</label>-->
+                <br/><br/>
+            </div>
+
             <br/>
             <button class="btn" id="makeSignbtn" style="background-color: #a39a86; color: rgb(243, 236, 231); cursor: pointer; display: none;" onclick="makeSign()" >서명 만들기</button>
 
