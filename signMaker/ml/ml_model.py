@@ -6,10 +6,10 @@ import numpy as np
 import cv2
 import os
 import sys
-# sys.path.insert(
-#     1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
 sys.path.insert(
-    1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/')
+    1, '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/')
+# sys.path.insert(
+#     1, '/Users/parksohyun/2021Capstone/TheSignature/signMaker/')
 import applyAlpha
 import addLogo
 
@@ -42,14 +42,14 @@ def generate(name, num):
     # CGAN-ENG
     is_upper = name[num].isupper()
     if is_upper:
-      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
+      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-upper-generator'
-      model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-upper-generator'
+      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-upper-generator'
 
     else:
-      # model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
+      model_name = 'C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
       # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-english/eng-lower-generator2'
-      model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-lower-generator2'
+      # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-english/eng-lower-generator2'
 
     sub_num = ord(name[num].lower()) - 97
     new_model = tf.keras.models.load_model(model_name, compile=False)
@@ -66,15 +66,16 @@ def generate(name, num):
     
   else:
     # Hangul
-    # f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    f = open("C:/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
     # f = open("D:/TheSignature-Web/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
-    f = open("/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
+    # f = open("/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/2350-common-hangul.txt",'rt', encoding='UTF8')
 
     charset = f.readlines()
     char = name[num] + "\n"
     char_index = charset.index(char)
     (gen_num, sub_num) = get_hangul_index(char_index)
-    model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    model_name = '/Users/1102k/Desktop/workspace/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
+    # model_name = '/Users/parksohyun/2021Capstone/TheSignature/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     # model_name = 'D:/TheSignature-Web/signMaker/ml/cgan-hangul/' + str(gen_num) + '-generator'
     new_model = tf.keras.models.load_model(model_name, compile=False)
     noise = np.random.normal(0, 1, (1, 100))
